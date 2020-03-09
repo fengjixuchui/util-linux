@@ -1119,6 +1119,48 @@ int mnt_context_do_mount(struct libmnt_context *cxt)
 	return res;
 }
 
+/*
+ * Returns mountinfo FS entry of context source patch if the source is already
+ * mounted. This function is used for "already mounted" message or to get FS of
+ * re-used loop device.
+ */
+static struct libmnt_fs *get_already_mounted_source(struct libmnt_context *cxt)
+{
+	const char *src;
+	struct libmnt_table *tb;
+
+	assert(cxt);
+
+	src = mnt_fs_get_srcpath(cxt->fs);
+
+	if (src && mnt_context_get_mtab(cxt, &tb) == 0) {
+		struct libmnt_iter itr;
+		struct libmnt_fs *fs;
+
+		mnt_reset_iter(&itr, MNT_ITER_FORWARD);
+		while (mnt_table_next_fs(tb, &itr, &fs) == 0) {
+			const char *s = mnt_fs_get_srcpath(fs),
+				   *t = mnt_fs_get_target(fs);
+
+			if (t && s && mnt_fs_streq_srcpath(fs, src))
+				return fs;
+		}
+	}
+	return NULL;
+}
+
+/*
+ * Checks if source filesystem superblock is already ro-mounted. Note that we
+ * care about FS superblock as VFS node is irrelevant here.
+ */
+static int is_source_already_rdonly(struct libmnt_context *cxt)
+{
+	struct libmnt_fs *fs = get_already_mounted_source(cxt);
+	const char *opts = fs ? mnt_fs_get_fs_options(fs) : NULL;
+
+	return opts && mnt_optstr_get_option(opts, "ro", NULL, NULL) == 0;
+}
+
 /**
  * mnt_context_finalize_mount:
  * @cxt: context
@@ -1220,11 +1262,14 @@ again:
 		rc = mnt_context_update_tabs(cxt);
 
 	/*
-	 * Read-only device; try mount filesystem read-only
+	 * Read-only device or already read-only mounted FS.
+	 * Try mount the filesystem read-only.
 	 */
 	if ((rc == -EROFS && !mnt_context_syscall_called(cxt))	/* before syscall; rdonly loopdev */
 	     || mnt_context_get_syscall_errno(cxt) == EROFS	/* syscall failed with EROFS */
-	     || mnt_context_get_syscall_errno(cxt) == EACCES)	/* syscall failed with EACCES */
+	     || mnt_context_get_syscall_errno(cxt) == EACCES	/* syscall failed with EACCES */
+	     || (mnt_context_get_syscall_errno(cxt) == EBUSY	/* already ro-mounted FS */
+		 && is_source_already_rdonly(cxt)))
 	{
 		unsigned long mflags = 0;
 
@@ -1600,7 +1645,7 @@ int mnt_context_get_mount_excode(
 		 * Libmount success && syscall success.
 		 */
 		if (buf && mnt_context_forced_rdonly(cxt))
-			snprintf(buf, bufsz, _("WARNING: device write-protected, mounted read-only"));
+			snprintf(buf, bufsz, _("WARNING: source write-protected, mounted read-only"));
 		return MNT_EX_SUCCESS;
 	}
 
@@ -1721,34 +1766,22 @@ int mnt_context_get_mount_excode(
 		break;
 
 	case EBUSY:
-	{
-		struct libmnt_table *tb;
-
 		if (!buf)
 			break;
 		if (mflags & MS_REMOUNT) {
 			snprintf(buf, bufsz, _("mount point is busy"));
 			break;
 		}
-		if (src && mnt_context_get_mtab(cxt, &tb) == 0) {
-			struct libmnt_iter itr;
-			struct libmnt_fs *fs;
+		if (src) {
+			struct libmnt_fs *fs = get_already_mounted_source(cxt);
 
-			mnt_reset_iter(&itr, MNT_ITER_FORWARD);
-			while (mnt_table_next_fs(tb, &itr, &fs) == 0) {
-				const char *s = mnt_fs_get_srcpath(fs),
-					   *t = mnt_fs_get_target(fs);
-
-				if (t && s && mnt_fs_streq_srcpath(fs, src)) {
-					snprintf(buf, bufsz, _("%s already mounted on %s"), s, t);
-					break;
-				}
-			}
+			if (fs && mnt_fs_get_target(fs))
+				snprintf(buf, bufsz, _("%s already mounted on %s"),
+						src, mnt_fs_get_target(fs));
 		}
 		if (!*buf)
 			snprintf(buf, bufsz, _("%s already mounted or mount point busy"), src);
 		break;
-	}
 	case ENOENT:
 		if (tgt && lstat(tgt, &st)) {
 			if (buf)

@@ -1153,7 +1153,10 @@ static int command_parttype(struct sfdisk *sf, int argc, char **argv)
 		backup_partition_table(sf, devname);
 
 	/* parse <type> and apply to PT */
-	type = fdisk_label_parse_parttype(lb, typestr);
+	type = fdisk_label_advparse_parttype(lb, typestr,
+			FDISK_PARTTYPE_PARSE_DATA
+			| FDISK_PARTTYPE_PARSE_ALIAS
+			| FDISK_PARTTYPE_PARSE_SHORTCUT);
 	if (!type)
 		errx(EXIT_FAILURE, _("failed to parse %s partition type '%s'"),
 				fdisk_label_get_name(lb), typestr);
@@ -1468,7 +1471,7 @@ static void command_fdisk_help(void)
 
 	fputc('\n', stdout);
 	fputs(_("   <type>   The partition type.  Default is a Linux data partition.\n"), stdout);
-	fputs(_("            MBR: hex or L,S,E,X,U,R,V shortcuts.\n"), stdout);
+	fputs(_("            MBR: hex or L,S,Ex,X,U,R,V shortcuts.\n"), stdout);
 	fputs(_("            GPT: UUID or L,S,H,U,R,V shortcuts.\n"), stdout);
 
 	fputc('\n', stdout);
@@ -1530,10 +1533,13 @@ static int has_container_or_unused(struct sfdisk *sf)
 
 	nparts = fdisk_get_npartitions(sf->cxt);
 	for (i = 0; i < nparts; i++) {
+
+		if (!fdisk_is_partition_used(sf->cxt, i)) {
+			sf->unused = 1;
+			continue;
+		}
 		if (fdisk_get_partition(sf->cxt, i, &pa) != 0)
 			continue;
-		if (!fdisk_partition_is_used(pa))
-			sf->unused = 1;
 		if (fdisk_partition_is_container(pa))
 			sf->container = 1;
 	}
@@ -1840,7 +1846,7 @@ static int command_fdisk(struct sfdisk *sf, int argc, char **argv)
 		if (created
 		    && partno < 0
 		    && next_partno == fdisk_get_npartitions(sf->cxt)
-		    && has_container_or_unused(sf)) {
+		    && !has_container_or_unused(sf)) {
 			fdisk_info(sf->cxt, _("All partitions used."));
 			rc = SFDISK_DONE_ASK;
 			break;
