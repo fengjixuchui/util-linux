@@ -255,7 +255,9 @@ int parse_switch(const char *arg, const char *errmesg, ...)
 		if (strcmp(arg, a) == 0) {
 			va_end(ap);
 			return 1;
-		} else if (strcmp(arg, b) == 0) {
+		}
+
+		if (strcmp(arg, b) == 0) {
 			va_end(ap);
 			return 0;
 		}
@@ -602,24 +604,44 @@ char *size_to_human_string(int options, uint64_t bytes)
 
 	/* round */
 	if (frac) {
+		/* get 3 digits after decimal point */
+		if (frac >= UINT64_MAX / 1000)
+			frac = ((frac / 1024) * 1000) / (1ULL << (exp - 10)) ;
+		else
+			frac = (frac * 1000) / (1ULL << (exp)) ;
+
 		if (options & SIZE_DECIMAL_2DIGITS) {
-			frac = (frac / (1ULL << (exp - 10)) + 5) / 10;
-			if (frac % 10 == 0)
-				frac /= 10;	/* convert N.90 to N.9 */
+			/* round 4/5 and keep 2 digits after decimal point */
+			frac = (frac + 5) / 10 ;
 		} else {
-			frac = (frac / (1ULL << (exp - 10)) + 50) / 100;
-			if (frac == 10)
-				dec++, frac = 0;
+			/* round 4/5 and keep 1 digit after decimal point */
+			frac = ((frac + 50) / 100) * 10 ;
+		}
+
+		/* rounding could have overflowed */
+		if (frac == 100) {
+			dec++;
+			frac = 0;
 		}
 	}
 
 	if (frac) {
 		struct lconv const *l = localeconv();
 		char *dp = l ? l->decimal_point : NULL;
+		int len;
 
 		if (!dp || !*dp)
 			dp = ".";
-		snprintf(buf, sizeof(buf), "%d%s%" PRIu64 "%s", dec, dp, frac, suffix);
+
+		len = snprintf(buf, sizeof(buf), "%d%s%02" PRIu64, dec, dp, frac);
+		if (len > 0 && (size_t) len < sizeof(buf)) {
+			/* remove potential extraneous zero */
+			if (buf[len - 1] == '0')
+				buf[len--] = '\0';
+			/* append suffix */
+			xstrncpy(buf+len, suffix, sizeof(buf) - len);
+		} else
+			*buf = '\0';	/* snprintf error */
 	} else
 		snprintf(buf, sizeof(buf), "%d%s", dec, suffix);
 
@@ -1051,7 +1073,7 @@ static int test_strdup_to_member(int argc, char *argv[])
 static int test_strutils_sizes(int argc, char *argv[])
 {
 	uintmax_t size = 0;
-	char *hum, *hum2;
+	char *hum1, *hum2, *hum3;
 
 	if (argc < 2)
 		return EXIT_FAILURE;
@@ -1059,13 +1081,17 @@ static int test_strutils_sizes(int argc, char *argv[])
 	if (strtosize(argv[1], &size))
 		errx(EXIT_FAILURE, "invalid size '%s' value", argv[1]);
 
-	hum = size_to_human_string(SIZE_SUFFIX_1LETTER, size);
+	hum1 = size_to_human_string(SIZE_SUFFIX_1LETTER, size);
 	hum2 = size_to_human_string(SIZE_SUFFIX_3LETTER |
 				    SIZE_SUFFIX_SPACE, size);
+	hum3 = size_to_human_string(SIZE_SUFFIX_3LETTER |
+				    SIZE_SUFFIX_SPACE |
+				    SIZE_DECIMAL_2DIGITS, size);
 
-	printf("%25s : %20ju : %8s : %12s\n", argv[1], size, hum, hum2);
-	free(hum);
+	printf("%25s : %20ju : %8s : %12s : %13s\n", argv[1], size, hum1, hum2, hum3);
+	free(hum1);
 	free(hum2);
+	free(hum3);
 
 	return EXIT_SUCCESS;
 }
@@ -1086,19 +1112,16 @@ int main(int argc, char *argv[])
 	if (argc == 3 && strcmp(argv[1], "--size") == 0)
 		return test_strutils_sizes(argc - 1, argv + 1);
 
-	else if (argc == 4 && strcmp(argv[1], "--cmp-paths") == 0)
+	if (argc == 4 && strcmp(argv[1], "--cmp-paths") == 0)
 		return test_strutils_cmp_paths(argc - 1, argv + 1);
 
-	else if (argc == 4 && strcmp(argv[1], "--strdup-member") == 0)
+	if (argc == 4 && strcmp(argv[1], "--strdup-member") == 0)
 		return test_strdup_to_member(argc - 1, argv + 1);
 
-	else {
-		fprintf(stderr, "usage: %1$s --size <number>[suffix]\n"
-				"       %1$s --cmp-paths <path> <path>\n"
-				"       %1$s --strdup-member <str> <str>\n",
-				argv[0]);
-		exit(EXIT_FAILURE);
-	}
+	fprintf(stderr, "usage: %1$s --size <number>[suffix]\n"
+			"       %1$s --cmp-paths <path> <path>\n"
+			"       %1$s --strdup-member <str> <str>\n",
+			argv[0]);
 
 	return EXIT_FAILURE;
 }
