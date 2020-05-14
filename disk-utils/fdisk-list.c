@@ -360,13 +360,17 @@ char *next_proc_partition(FILE **f)
 	return NULL;
 }
 
-int print_device_pt(struct fdisk_context *cxt, char *device, int warnme, int verify)
+int print_device_pt(struct fdisk_context *cxt, char *device, int warnme,
+		    int verify, int seperator)
 {
 	if (fdisk_assign_device(cxt, device, 1) != 0) {	/* read-only */
 		if (warnme || errno == EACCES)
 			warn(_("cannot open %s"), device);
 		return -1;
 	}
+
+	if (seperator)
+		fputs("\n\n", stdout);
 
 	list_disk_geometry(cxt);
 
@@ -379,13 +383,17 @@ int print_device_pt(struct fdisk_context *cxt, char *device, int warnme, int ver
 	return 0;
 }
 
-int print_device_freespace(struct fdisk_context *cxt, char *device, int warnme)
+int print_device_freespace(struct fdisk_context *cxt, char *device, int warnme,
+			   int seperator)
 {
 	if (fdisk_assign_device(cxt, device, 1) != 0) {	/* read-only */
 		if (warnme || errno == EACCES)
 			warn(_("cannot open %s"), device);
 		return -1;
 	}
+
+	if (seperator)
+		fputs("\n\n", stdout);
 
 	list_freespace(cxt);
 	fdisk_deassign_device(cxt, 1);
@@ -395,30 +403,26 @@ int print_device_freespace(struct fdisk_context *cxt, char *device, int warnme)
 void print_all_devices_pt(struct fdisk_context *cxt, int verify)
 {
 	FILE *f = NULL;
-	int ct = 0;
+	int sep = 0;
 	char *dev;
 
 	while ((dev = next_proc_partition(&f))) {
-		if (ct)
-			fputs("\n\n", stdout);
-		if (print_device_pt(cxt, dev, 0, verify) == 0)
-			ct++;
+		print_device_pt(cxt, dev, 0, verify, sep);
 		free(dev);
+		sep = 1;
 	}
 }
 
 void print_all_devices_freespace(struct fdisk_context *cxt)
 {
 	FILE *f = NULL;
-	int ct = 0;
+	int sep = 0;
 	char *dev;
 
 	while ((dev = next_proc_partition(&f))) {
-		if (ct)
-			fputs("\n\n", stdout);
-		if (print_device_freespace(cxt, dev, 0) == 0)
-			ct++;
+		print_device_freespace(cxt, dev, 0, sep);
 		free(dev);
+		sep = 1;
 	}
 }
 
