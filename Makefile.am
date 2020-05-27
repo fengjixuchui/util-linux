@@ -5,6 +5,11 @@ AM_CPPFLAGS = \
 	-D_PATH_RUNSTATEDIR=\"${runstatedir}\" \
 	-D_PATH_SYSCONFSTATICDIR=\"${sysconfstaticdir}\"
 
+if USE_VENDORDIR
+AM_CPPFLAGS += \
+	-D_PATH_VENDORDIR=\"${vendordir}\"
+endif
+
 AM_CFLAGS = -fsigned-char $(WARN_CFLAGS)
 AM_LDFLAGS = $(ASAN_LDFLAGS)
 
@@ -151,6 +156,12 @@ else
 edit_cmd += -e 's|@LIBCRYPTSETUP[@]||g'
 endif
 
+if USE_VENDORDIR
+edit_cmd += -e 's|@vendordir[@]|$(vendordir)|g'
+else
+edit_cmd += -e 's|@vendordir[@]||g'
+endif
+
 CLEANFILES += $(PATHFILES)
 EXTRA_DIST += $(PATHFILES:=.in)
 
@@ -167,7 +178,7 @@ $(PATHFILES): Makefile
 dist-hook:
 	echo $(VERSION) > $(distdir)/.tarball-version
 # Set ChangeLog tag reference.
-	sed -i "s/log/log;h=$(VERSION)/" $(distdir)/ChangeLog
+	sed -i "s!log!log?h=v$(VERSION)!" $(distdir)/ChangeLog
 
 distclean-local:
 	-find . -name \*~ -o -name \*.orig -o -name \*.rej | xargs rm -f

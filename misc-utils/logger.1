@@ -262,7 +262,7 @@ before version 2.26 used openlog, and hence was unable to detected loss of
 messages sent to Unix sockets.
 .IP
 The default mode is \fBauto\fR.  When errors are not enabled lost messages are
-not communicated and will result to successful return value of
+not communicated and will result to successful exit status of
 .BR logger (1)
 invocation.
 .TP
@@ -294,7 +294,7 @@ Display version information and exit.
 .TP
 .BR \-h , " \-\-help"
 Display help text and exit.
-.SH RETURN VALUE
+.SH EXIT STATUS
 The
 .B logger
 utility exits 0 on success, and >0 if an error occurs.
@@ -345,20 +345,16 @@ l l.
 .PP
 For the priority order and intended purposes of these facilities and levels, see
 .BR syslog (3).
-.SH EXAMPLES
+.SH CONFORMING TO
+The
+.B logger
+command is expected to be IEEE Std 1003.2 ("POSIX.2") compatible.
+.SH EXAMPLE
 .B logger System rebooted
 .br
 .B logger \-p local0.notice \-t HOSTIDM \-f /dev/idmc
 .br
 .B logger \-n loghost.example.com System rebooted
-.SH SEE ALSO
-.BR journalctl (1),
-.BR syslog (3),
-.BR systemd.journal-fields (7)
-.SH STANDARDS
-The
-.B logger
-command is expected to be IEEE Std 1003.2 ("POSIX.2") compatible.
 .SH AUTHORS
 The
 .B logger
@@ -375,6 +371,10 @@ and
 .MT kerolasa@iki.fi
 Sami Kerola
 .ME .
+.SH SEE ALSO
+.BR journalctl (1),
+.BR syslog (3),
+.BR systemd.journal-fields (7)
 .SH AVAILABILITY
 The logger command is part of the util-linux package and is available from
 .UR https://\:www.kernel.org\:/pub\:/linux\:/utils\:/util-linux/

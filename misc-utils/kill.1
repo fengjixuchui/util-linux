@@ -147,6 +147,23 @@ Example.  Send signals QUIT, TERM and KILL in sequence and wait for 1000
 milliseconds between the signals
 .br
 kill \-\-verbose \-\-timeout 1000 TERM \-\-timeout 1000 KILL \-\-signal QUIT 12345
+.SH EXIT STATUS
+.B kill
+has the following exit status values:
+.PP
+.RS
+.PD 0
+.TP
+.B 0
+success
+.TP
+.B 1
+failure
+.TP
+.B 64
+partial success (when more than one process specified)
+.PD
+.RE
 .SH NOTES
 Although it is possible to specify the TID (thread ID, see
 .BR gettid (2))
@@ -171,31 +188,6 @@ preferred in relation to the
 executable described by this manual.  Easiest way to ensure one is executing
 the executable is to use full path when calling the command, for example:
 .B "/bin/kill \-\-version"
-.SH RETURN CODES
-.B kill
-has the following return codes:
-.PP
-.RS
-.PD 0
-.TP
-.B 0
-success
-.TP
-.B 1
-failure
-.TP
-.B 64
-partial success (when more than one process specified)
-.PD
-.RE
-.SH SEE ALSO
-.BR bash (1),
-.BR tcsh (1),
-.BR sigaction (2),
-.BR kill (2),
-.BR sigqueue (3),
-.BR signal (7)
-
 .SH AUTHORS
 .MT svalente@mit.edu
 Salvatore Valente
@@ -207,6 +199,14 @@ Karel Zak
 .br
 .PP
 The original version was taken from BSD 4.4.
+
+.SH SEE ALSO
+.BR bash (1),
+.BR tcsh (1),
+.BR sigaction (2),
+.BR kill (2),
+.BR sigqueue (3),
+.BR signal (7)
 
 .SH AVAILABILITY
 The kill command is part of the util-linux package and is available from

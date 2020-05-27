@@ -2501,9 +2501,9 @@ initialize a new device if the same backing file is already used for some loop
 device with the same offset and sizelimit. This is necessary to avoid
 a filesystem corruption.
 
-.SH RETURN CODES
+.SH EXIT STATUS
 .B mount
-has the following return codes (the bits can be ORed):
+has the following exit status values (the bits can be ORed):
 .TP
 .B 0
 success
@@ -2574,6 +2574,17 @@ and
 to the mount.<suffix> helpers.  All other options are used in a
 comma-separated list as argument to the \fB\-o\fR option.
 
+.SH ENVIRONMENT
+.IP LIBMOUNT_FSTAB=<path>
+overrides the default location of the fstab file (ignored for suid)
+.IP LIBMOUNT_MTAB=<path>
+overrides the default location of the mtab file (ignored for suid)
+.IP LIBMOUNT_DEBUG=all
+enables libmount debug output
+.IP LIBBLKID_DEBUG=all
+enables libblkid debug output
+.IP LOOPDEV_DEBUG=all
+enables loop device setup debug output
 .SH FILES
 See also "\fBThe files /etc/fstab, /etc/mtab and /proc/mounts\fR" section above.
 .TP 18n
@@ -2594,35 +2605,10 @@ temporary file (unused on systems with mtab symlink)
 .TP
 .I /etc/filesystems
 a list of filesystem types to try
-.SH ENVIRONMENT
-.IP LIBMOUNT_FSTAB=<path>
-overrides the default location of the fstab file (ignored for suid)
-.IP LIBMOUNT_MTAB=<path>
-overrides the default location of the mtab file (ignored for suid)
-.IP LIBMOUNT_DEBUG=all
-enables libmount debug output
-.IP LIBBLKID_DEBUG=all
-enables libblkid debug output
-.IP LOOPDEV_DEBUG=all
-enables loop device setup debug output
-.SH SEE ALSO
-.na
-.BR mount (2),
-.BR umount (2),
-.BR umount (8),
-.BR fstab (5),
-.BR nfs (5),
-.BR xfs (5),
-.BR e2label (8),
-.BR findmnt (8),
-.BR losetup (8),
-.BR mke2fs (8),
-.BR mountd (8),
-.BR nfsd (8),
-.BR swapon (8),
-.BR tune2fs (8),
-.BR xfs_admin (8)
-.ad
+.SH HISTORY
+A
+.B mount
+command existed in Version 5 AT&T UNIX.
 .SH BUGS
 It is possible for a corrupted filesystem to cause a crash.
 .PP
@@ -2682,14 +2668,28 @@ the
 command manually before calling
 .B mount
 with the configured loop device.
-.SH HISTORY
-A
-.B mount
-command existed in Version 5 AT&T UNIX.
 .SH AUTHORS
 .nf
 Karel Zak <kzak@redhat.com>
 .fi
+.SH SEE ALSO
+.na
+.BR mount (2),
+.BR umount (2),
+.BR umount (8),
+.BR fstab (5),
+.BR nfs (5),
+.BR xfs (5),
+.BR e2label (8),
+.BR findmnt (8),
+.BR losetup (8),
+.BR mke2fs (8),
+.BR mountd (8),
+.BR nfsd (8),
+.BR swapon (8),
+.BR tune2fs (8),
+.BR xfs_admin (8)
+.ad
 .SH AVAILABILITY
 The mount command is part of the util-linux package and is available from
 https://www.kernel.org/pub/linux/utils/util-linux/.

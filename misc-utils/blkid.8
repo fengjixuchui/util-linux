@@ -91,7 +91,7 @@ For security reasons
 .B blkid
 silently ignores all devices where the probing result is ambivalent (multiple
 colliding filesystems are detected).  The low-level probing mode (\fB\-p\fR)
-provides more information and extra return code in this case.
+provides more information and extra exit status in this case.
 It's recommended to use
 .BR wipefs (8)
 to get a detailed overview and to erase obsolete stuff (magic strings) from the device.
@@ -286,19 +286,19 @@ Look up the device that uses this filesystem \fIuuid\fR.  For more details see t
 .TP
 \fB\-V\fR, \fB\-\-version\fR
 Display version number and exit.
-.SH RETURN CODE
+.SH EXIT STATUS
 If the specified device or device addressed by specified token (option
 \fB\-\-match\-token\fR) was found and it's possible to gather any information about the
-device, an exit code 0 is returned.  Note the option \fB\-\-match\-tag\fR filters output
-tags, but it does not affect return code.
+device, an exit status 0 is returned.  Note the option \fB\-\-match\-tag\fR filters output
+tags, but it does not affect exit status.
 
 If the specified token was not found, or no (specified) devices could be
 identified, or it is impossible to gather any information about the device
-identifiers or device content an exit code of 2 is returned.
+identifiers or device content an exit status of 2 is returned.
 
-For usage or other errors, an exit code of 4 is returned.
+For usage or other errors, an exit status of 4 is returned.
 
-If an ambivalent probing result was detected by low-level probing mode (\fB\-p\fR), an exit code of 8 is
+If an ambivalent probing result was detected by low-level probing mode (\fB\-p\fR), an exit status of 8 is
 returned.
 .SH CONFIGURATION FILE
 The standard location of the
@@ -327,12 +327,12 @@ a comma-separated list.  Default is "udev,scan".  The "udev" method uses udev
 symlinks and the "scan" method scans all block devices from the
 .I /proc/partitions
 file.
-.SH AUTHOR
+.SH ENVIRONMENT
+.IP "Setting LIBBLKID_DEBUG=all enables debug output."
+.SH AUTHORS
 .B blkid
 was written by Andreas Dilger for libblkid and improved by Theodore Ts'o
 and Karel Zak.
-.SH ENVIRONMENT
-.IP "Setting LIBBLKID_DEBUG=all enables debug output."
 .SH SEE ALSO
 .BR libblkid (3),
 .BR findfs (8),

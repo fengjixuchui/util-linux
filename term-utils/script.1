@@ -104,8 +104,8 @@ terminal to avoid double-echo, and enabled if standard input is not terminal
 to avoid missing input in the session log.
 .TP
 \fB\-e\fR, \fB\-\-return\fR
-Return the exit code of the child process.  Uses the same format as bash
-termination on signal termination exit code is 128+n.  The exit code of
+Return the exit status of the child process.  Uses the same format as bash
+termination on signal termination exit status is 128+n.  The exit status of
 the child process is always stored in type script file too.
 .TP
 \fB\-f\fR, \fB\-\-flush\fR
@@ -190,6 +190,25 @@ Display version information and exit.
 .TP
 \fB\-h\fR, \fB\-\-help\fR
 Display help text and exit.
+.SH SIGNALS
+Upon receiving
+.BR SIGUSR1 ,
+.B script
+immediately flushes the output files.
+.PP
+.SH ENVIRONMENT
+The following environment variable is utilized by
+.BR script :
+.TP
+.B SHELL
+If the variable
+.B SHELL
+exists, the shell forked by
+.B script
+will be that shell.  If
+.B SHELL
+is not set, the Bourne shell is assumed.  (Most shells set this variable
+automatically).
 .SH NOTES
 The script ends when the forked shell exits (a
 .I control-D
@@ -240,32 +259,6 @@ You should also avoid use of script in command pipes, as
 .B script
 can read more input than you would expect.
 .PP
-.SH SIGNALS
-Upon receiving
-.BR SIGUSR1 ,
-.B script
-immediately flushes the output files.
-.PP
-.SH ENVIRONMENT
-The following environment variable is utilized by
-.BR script :
-.TP
-.B SHELL
-If the variable
-.B SHELL
-exists, the shell forked by
-.B script
-will be that shell.  If
-.B SHELL
-is not set, the Bourne shell is assumed.  (Most shells set this variable
-automatically).
-.SH SEE ALSO
-.BR csh (1)
-(for the
-.I history
-mechanism),
-.BR scriptreplay (1),
-.BR scriptlive (1),
 .SH HISTORY
 The
 .B script
@@ -283,6 +276,13 @@ is not a terminal (for example: \fBecho foo | script\fR), then the session
 can hang, because the interactive shell within the script session misses EOF and
 .B script
 has no clue when to close the session.  See the \fBNOTES\fR section for more information.
+.SH SEE ALSO
+.BR csh (1)
+(for the
+.I history
+mechanism),
+.BR scriptreplay (1),
+.BR scriptlive (1),
 .SH AVAILABILITY
 The script command is part of the util-linux package and is available from
 .UR https://\:www.kernel.org\:/pub\:/linux\:/utils\:/util-linux/

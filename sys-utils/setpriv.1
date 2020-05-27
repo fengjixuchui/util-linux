@@ -26,7 +26,7 @@ from
 from
 .BR runit ,
 or similar tools shipped by other service managers.
-.SH OPTION
+.SH OPTIONS
 .TP
 .B \-\-clear\-groups
 Clear supplementary groups.
@@ -184,7 +184,7 @@ If applying any specified option fails,
 .I program
 will not be run and
 .B setpriv
-will return with exit code 127.
+will return with exit status 127.
 .PP
 Be careful with this tool \-\- it may have unexpected security consequences.
 For example, setting no_new_privs and then execing a program that is
@@ -204,15 +204,15 @@ If you want to mimic daemontools'
 try:
 .sp
 .B "    setpriv \-\-reuid=1000 \-\-regid=1000 \-\-clear\-groups"
+.SH AUTHORS
+.MT luto@amacapital.net
+Andy Lutomirski
+.ME
 .SH SEE ALSO
 .BR runuser (1),
 .BR su (1),
 .BR prctl (2),
 .BR capabilities (7)
-.SH AUTHOR
-.MT luto@amacapital.net
-Andy Lutomirski
-.ME
 .SH AVAILABILITY
 The
 .B setpriv

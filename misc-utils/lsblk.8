@@ -167,6 +167,27 @@ command is issued.  The specified directory is the system root of the Linux
 instance to be inspected.  The real device nodes in the target directory can
 be replaced by text files with udev attributes.
 
+.SH EXIT STATUS
+.IP 0
+success
+.IP 1
+failure
+.IP 32
+none of specified devices found
+.IP 64
+some specified devices found, some not found
+
+.SH ENVIRONMENT
+.IP LSBLK_DEBUG=all
+enables lsblk debug output.
+.IP LIBBLKID_DEBUG=all
+enables libblkid debug output.
+.IP LIBMOUNT_DEBUG=all
+enables libmount debug output.
+.IP LIBSMARTCOLS_DEBUG=all
+enables libsmartcols debug output.
+.IP LIBSMARTCOLS_DEBUG_PADDING=on
+use visible padding characters. Requires enabled LIBSMARTCOLS_DEBUG.
 .SH NOTES
 For partitions, some information (e.g., queue attributes) is inherited from the
 parent device.
@@ -180,32 +201,11 @@ This sysfs block directory appeared in kernel 2.6.27 (October 2008).
 In case of problems with a new enough kernel, check that CONFIG_SYSFS
 was enabled at the time of the kernel build.
 
-.SH RETURN CODES
-.IP 0
-success
-.IP 1
-failure
-.IP 32
-none of specified devices found
-.IP 64
-some specified devices found, some not found
-
 .SH AUTHORS
 .nf
 Milan Broz <mbroz@redhat.com>
 Karel Zak <kzak@redhat.com>
 .fi
-.SH ENVIRONMENT
-.IP LSBLK_DEBUG=all
-enables lsblk debug output.
-.IP LIBBLKID_DEBUG=all
-enables libblkid debug output.
-.IP LIBMOUNT_DEBUG=all
-enables libmount debug output.
-.IP LIBSMARTCOLS_DEBUG=all
-enables libsmartcols debug output.
-.IP LIBSMARTCOLS_DEBUG_PADDING=on
-use visible padding characters. Requires enabled LIBSMARTCOLS_DEBUG.
 .SH SEE ALSO
 .BR ls (1),
 .BR blkid (8),
