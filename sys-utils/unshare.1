@@ -19,7 +19,7 @@ By default, a new namespace persists only as long as it has member processes.
 A new namespace can be made persistent even when it has no member processes
 by bind mounting
 /proc/\fIpid\fR/ns/\fItype\fR files to a filesystem path.
-A namespace that has been made persistent in this was can subsequently
+A namespace that has been made persistent in this way can subsequently
 be entered with
 .BR \%nsenter (1)
 even after the \fIprogram\fR terminates (except PID namespaces where
@@ -28,7 +28,7 @@ Once a persistent \%namespace is no longer needed,
 it can be unpersisted by using
 .BR umount (8)
 to remove the bind mount.
-See the \fBEXAMPLE\fR section for more details.
+See the \fBEXAMPLES\fR section for more details.
 .PP
 .B unshare
 since util-linux version 2.36 uses /\fIproc/[pid]/ns/pid_for_children\fP and \fI/proc/[pid]/ns/time_for_children\fP
@@ -243,7 +243,7 @@ The proc and sysfs filesystems mounting as root in a user namespace have to be
 restricted so that a less privileged user can not get more access to sensitive
 files that a more privileged user made unavailable. In short the rule for proc
 and sysfs is as close to a bind mount as possible.
-.SH EXAMPLE
+.SH EXAMPLES
 .PP
 The following command creates a PID namespace, using
 .B \-\-fork
@@ -304,9 +304,16 @@ FOO
 .EE
 .in
 .PP
-Establish a persistent mount namespace referenced by the bind mount
-/root/namespaces/mnt.  This example shows a portable solution, because it
-makes sure that the bind mount is created on a shared filesystem.
+The following commands
+establish a persistent mount namespace referenced by the bind mount
+.IR /root/namespaces/mnt .
+In order to ensure that this bind mount does not get propagated
+to other mount namespaces,
+the parent directory
+.RI ( /root/namespaces )
+is first made a bind mount with
+.I private
+propagation.
 .PP
 .in +4n
 .EX

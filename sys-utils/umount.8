@@ -24,7 +24,7 @@
 .\"
 .TH UMOUNT 8 "July 2014" "util-linux" "System Administration"
 .SH NAME
-umount \- unmount file systems
+umount \- unmount filesystems
 .SH SYNOPSIS
 .B umount \-a
 .RB [ \-dflnrv ]
@@ -43,13 +43,13 @@ umount \- unmount file systems
 .SH DESCRIPTION
 The
 .B umount
-command detaches the mentioned file system(s) from the file hierarchy.  A
-file system is specified by giving the directory where it has been
-mounted.  Giving the special device on which the file system lives may
+command detaches the mentioned filesystem(s) from the file hierarchy.  A
+filesystem is specified by giving the directory where it has been
+mounted.  Giving the special device on which the filesystem lives may
 also work, but is obsolete, mainly because it will fail in case this
 device was mounted on more than one directory.
 .PP
-Note that a file system cannot be unmounted when it is 'busy' - for
+Note that a filesystem cannot be unmounted when it is 'busy' - for
 example, when there are open files on it, or when some process has its
 working directory there, or when a swap file on it is in use.  The
 offending process could even be
@@ -62,18 +62,23 @@ issues. See \fB\-\-lazy\fR description below.
 .BR \-a , " \-\-all"
 All of the filesystems described in
 .I /proc/self/mountinfo
-(or in deprecated /etc/mtab)
+(or in deprecated
+.IR /etc/mtab )
 are unmounted, except the proc, devfs, devpts, sysfs, rpc_pipefs and nfsd
 filesystems. This list of the filesystems may be replaced by \fB\-\-types\fR
 umount option.
 .TP
 .BR \-A , " \-\-all\-targets"
-Unmount all mountpoints in the current namespace for the specified filesystem.
+Unmount all mountpoints in the current mount namespace
+for the specified filesystem.
 The filesystem can be specified by one of the mountpoints or the device name (or
 UUID, etc.).  When this option is used together with \fB\-\-recursive\fR, then
 all nested mounts within the filesystem are recursively unmounted.
-This option is only supported on systems where /etc/mtab is a symlink
-to /proc/mounts.
+This option is only supported on systems where
+.I /etc/mtab
+is a symlink
+to
+.IR /proc/mounts .
 .TP
 .BR \-c , " \-\-no\-canonicalize"
 Do not canonicalize paths.  The paths canonicalization is based on
@@ -129,19 +134,26 @@ server or a network partition. Remounts of the share will not be possible.
 
 .TP
 .BR \-N , " \-\-namespace " \fIns
-Perform umount in namespace specified by \fIns\fR.
+Perform umount in the mount namespace specified by \fIns\fR.
 \fIns\fR is either PID of process running in that namespace
 or special file representing that namespace.
 .sp
 .BR umount (8)
-switches to the namespace when it reads /etc/fstab, writes /etc/mtab (or writes to /run/mount) and calls
+switches to the namespace when it reads
+.IR /etc/fstab ,
+writes
+.IR /etc/mtab
+(or writes to
+.IR /run/mount )
+and calls
 .BR umount (2)
-system call, otherwise it runs in the original namespace. It means that the target namespace does not have
+system call, otherwise it runs in the original namespace.
+It means that the target mount namespace does not have
 to contain any libraries or another requirements necessary to execute
 .BR umount (2)
 command.
 .sp
-See \fBnamespaces\fR(7) for more information.
+See \fBmount_namespaces\fR(7) for more information.
 .TP
 .BR \-n , " \-\-no\-mtab"
 Unmount without writing in
@@ -161,7 +173,9 @@ Suppress "not mounted" error messages.
 .BR \-R , " \-\-recursive"
 Recursively unmount each specified directory.  Recursion for each directory will
 stop if any unmount operation in the chain fails for any reason.  The relationship
-between mountpoints is determined by /proc/self/mountinfo entries.  The filesystem
+between mountpoints is determined by
+.I /proc/self/mountinfo
+entries.  The filesystem
 must be specified by mountpoint path; a recursive unmount by device name (or UUID)
 is unsupported.
 .TP
@@ -179,7 +193,8 @@ to indicate that no action should be taken for all of the mentioned types.
 Note that
 .B umount
 reads information about mounted filesystems from kernel (/proc/mounts) and
-filesystem names may be different than filesystem names used in the /etc/fstab
+filesystem names may be different than filesystem names used in the
+.I /etc/fstab
 (e.g., "nfs4" vs. "nfs").
 .TP
 .BR \-v , " \-\-verbose"
@@ -214,7 +229,8 @@ The
 .B umount
 command will automatically detach loop device previously initialized by
 .BR mount (8)
-command independently of /etc/mtab.
+command independently of
+.IR /etc/mtab .
 
 In this case the device is initialized with "autoclear" flag (see
 .BR losetup (8)
@@ -264,7 +280,8 @@ enables libmount debug output
 .TP
 .I /etc/mtab
 table of mounted filesystems (deprecated and usually replaced by
-symlink to /proc/mounts)
+symlink to
+.IR /proc/mounts )
 .TP
 .I /etc/fstab
 table of known filesystems
@@ -278,6 +295,7 @@ command appeared in Version 6 AT&T UNIX.
 .SH SEE ALSO
 .BR umount (2),
 .BR losetup (8),
+.BR mount_namespaces (7)
 .BR mount (8)
 .SH AVAILABILITY
 The umount command is part of the util-linux package and is available from
