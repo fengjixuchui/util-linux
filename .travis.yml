@@ -1,14 +1,14 @@
 language: c
 
 sudo: required
-dist: trusty
+dist: bionic
 
 git:
   depth: 1500
 
 compiler:
-  - gcc
-  - clang
+  - gcc-10
+  - clang-10
 
 env:
   - MAKE_CHECK="nonroot"
@@ -24,6 +24,15 @@ matrix:
     - os: osx
       osx_image: xcode7.3
       compiler: clang
+      env: MAKE_CHECK="root"
+    - arch: arm64
+      compiler: gcc-10
+      env: MAKE_CHECK="root"
+    - arch: ppc64le
+      compiler: gcc-10
+      env: MAKE_CHECK="root"
+    - arch: s390x
+      compiler: gcc-10
       env: MAKE_CHECK="root"
 
 branches:

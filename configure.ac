@@ -122,7 +122,6 @@ AC_C_BIGENDIAN
 dnl Compiler warnings
 UL_WARN_ADD([-fno-common])
 UL_WARN_ADD([-Wall])
-UL_WARN_ADD([-Werror=sequence-point])
 UL_WARN_ADD([-Wextra])
 UL_WARN_ADD([-Wextra-semi])
 UL_WARN_ADD([-Wembedded-directive])
@@ -145,7 +144,20 @@ UL_WARN_ADD([-Wstrict-prototypes])
 UL_WARN_ADD([-Wformat-security])
 UL_WARN_ADD([-Wimplicit-function-declaration])
 UL_WARN_ADD([-Wdiscarded-qualifiers])
+UL_WARN_ADD([-Waddress-of-packed-member])
+
+AC_ARG_ENABLE([werror],
+  AS_HELP_STRING([--enable-werror], [make all compiler warnings into errors]),
+  [], [enable_werror=no]
+)
+AS_IF([test "x$enable_werror" = xyes], [
+  UL_WARN_ADD([-Werror])
+],[
+  UL_WARN_ADD([-Werror=sequence-point])
+])
+
 AC_SUBST([WARN_CFLAGS])
+
 
 UL_WARN_ADD([-Wno-clobbered], [BSD_WARN_CFLAGS])
 AC_SUBST([BSD_WARN_CFLAGS])
@@ -166,6 +178,16 @@ AS_IF([test "x$enable_asan" = xyes], [
   ASAN_LDFLAGS="-fsanitize=address"
 ])
 AC_SUBST([ASAN_LDFLAGS])
+
+AC_ARG_ENABLE([ubsan],
+  AS_HELP_STRING([--enable-ubsan], [compile with UBsan]),
+  [], [enable_ubsan=no]
+)
+AS_IF([test "x$enable_ubsan" = xyes], [
+  UL_WARN_ADD([-fsanitize=undefined])
+  UBSAN_LDFLAGS="-fsanitize=undefined"
+])
+AC_SUBST([UBSAN_LDFLAGS])
 
 dnl libtool-2
 LT_INIT
@@ -426,20 +448,6 @@ AC_CHECK_MEMBERS([struct stat.st_mtim.tv_nsec],,,
 
 AC_CHECK_DECLS([_NL_TIME_WEEK_1STDAY],[],[],[[#include <langinfo.h>]])
 
-AC_CHECK_DECL([llseek],
-	[AC_DEFINE([HAVE_LLSEEK_PROTOTYPE], [1],
-			[Define to 1 if have llseek prototype])],
-	[],
-	[#include <unistd.h>])
-
-AC_CHECK_DECL([lseek64],
-	[AC_DEFINE([HAVE_LSEEK64_PROTOTYPE], [1],
-			[Define to 1 if have lseek64 prototype])],
-	[],
-	[#define _LARGEFILE_SOURCE
-	 #define _LARGEFILE64_SOURCE
-	 #include <unistd.h>])
-
 AC_CHECK_DECL([environ],
 	[AC_DEFINE([HAVE_ENVIRON_DECL], [1],
 		[Define to 1 if have **environ prototype])],
@@ -491,7 +499,6 @@ AC_CHECK_FUNCS([ \
 	jrand48 \
 	lchown \
 	llseek \
-	lseek64 \
 	mempcpy \
 	mkostemp \
 	nanosleep \
