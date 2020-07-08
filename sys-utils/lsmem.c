@@ -431,6 +431,18 @@ static int is_mergeable(struct lsmem *lsmem, struct memory_block *blk)
 	return 1;
 }
 
+static void free_info(struct lsmem *lsmem)
+{
+	int i;
+
+	if (!lsmem)
+		return;
+	free(lsmem->blocks);
+	for (i = 0; i < lsmem->ndirs; i++)
+		free(lsmem->dirs[i]);
+	free(lsmem->dirs);
+}
+
 static void read_info(struct lsmem *lsmem)
 {
 	struct memory_block blk;
@@ -642,6 +654,8 @@ int main(int argc, char **argv)
 		err(EXIT_FAILURE, _("failed to initialize %s handler"), _PATH_SYS_MEMORY);
 	if (prefix && ul_path_set_prefix(lsmem->sysmem, prefix) != 0)
 		err(EXIT_FAILURE, _("invalid argument to --sysroot"));
+	if (!ul_path_is_accessible(lsmem->sysmem))
+		err(EXIT_FAILURE, _("cannot open %s"), _PATH_SYS_MEMORY);
 
 	/* Shortcut to avoid scols machinery on --summary=only */
 	if (lsmem->want_table == 0 && lsmem->want_summary) {
@@ -742,5 +756,6 @@ int main(int argc, char **argv)
 
 	scols_unref_table(lsmem->table);
 	ul_unref_path(lsmem->sysmem);
+	free_info(lsmem);
 	return 0;
 }
