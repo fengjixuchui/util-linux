@@ -3,7 +3,7 @@
  * proxy between the current std{in,out,etrr} and the child's pty. Advantages:
  *
  * - child has no access to parent's terminal (e.g. su --pty)
- * - parent can log all traffic between user and child's terminall (e.g. script(1))
+ * - parent can log all traffic between user and child's terminal (e.g. script(1))
  * - it's possible to start commands on terminal although parent has no terminal
  *
  * This code is in the public domain; do with it what you wish.
@@ -113,7 +113,7 @@ pid_t ul_pty_get_child(struct ul_pty *pty)
 	return pty->child;
 }
 
-/* it's active when signals are redurected to sigfd */
+/* it's active when signals are redirected to sigfd */
 int ul_pty_is_running(struct ul_pty *pty)
 {
 	assert(pty);
@@ -146,7 +146,7 @@ static void pty_signals_cleanup(struct ul_pty *pty)
 /* call me before fork() */
 int ul_pty_setup(struct ul_pty *pty)
 {
-	struct termios slave_attrs;
+	struct termios attrs;
 	sigset_t ourset;
 	int rc = 0;
 
@@ -163,22 +163,22 @@ int ul_pty_setup(struct ul_pty *pty)
 			rc = -errno;
 			goto done;
 		}
+
+		attrs = pty->stdin_attrs;
+		if (pty->slave_echo)
+			attrs.c_lflag |= ECHO;
+		else
+			attrs.c_lflag &= ~ECHO;
+
 		ioctl(STDIN_FILENO, TIOCGWINSZ, (char *)&pty->win);
 		/* create master+slave */
-		rc = openpty(&pty->master, &pty->slave, NULL, &pty->stdin_attrs, &pty->win);
+		rc = openpty(&pty->master, &pty->slave, NULL, &attrs, &pty->win);
 		if (rc)
 			goto done;
 
 		/* set the current terminal to raw mode; pty_cleanup() reverses this change on exit */
-		slave_attrs = pty->stdin_attrs;
-		cfmakeraw(&slave_attrs);
-
-		if (pty->slave_echo)
-			slave_attrs.c_lflag |= ECHO;
-		else
-			slave_attrs.c_lflag &= ~ECHO;
-
-		tcsetattr(STDIN_FILENO, TCSANOW, &slave_attrs);
+		cfmakeraw(&attrs);
+		tcsetattr(STDIN_FILENO, TCSANOW, &attrs);
 	} else {
 	        DBG(SETUP, ul_debugobj(pty, "create for non-terminal"));
 
@@ -186,14 +186,14 @@ int ul_pty_setup(struct ul_pty *pty)
 		if (rc)
 			goto done;
 
-		tcgetattr(pty->slave, &slave_attrs);
+		tcgetattr(pty->slave, &attrs);
 
 		if (pty->slave_echo)
-			slave_attrs.c_lflag |= ECHO;
+			attrs.c_lflag |= ECHO;
 		else
-			slave_attrs.c_lflag &= ~ECHO;
+			attrs.c_lflag &= ~ECHO;
 
-		tcsetattr(pty->slave, TCSANOW, &slave_attrs);
+		tcsetattr(pty->slave, TCSANOW, &attrs);
 	}
 
 	sigfillset(&ourset);
@@ -479,7 +479,7 @@ static int handle_signal(struct ul_pty *pty, int fd)
 	case SIGQUIT:
 		DBG(SIG, ul_debugobj(pty, " get signal SIG{TERM,INT,QUIT}"));
 		pty->delivered_signal = info.ssi_signo;
-                /* Child termination is going to generate SIGCHILD (see above) */
+                /* Child termination is going to generate SIGCHLD (see above) */
 		if (pty->child > 0)
 	                kill(pty->child, SIGTERM);
 
@@ -515,9 +515,7 @@ int ul_pty_proxy_master(struct ul_pty *pty)
 		[POLLFD_STDIN]	= { .fd = STDIN_FILENO, .events = POLLIN | POLLERR | POLLHUP }
 	};
 
-	/* We use signalfd and standard signals by handlers are blocked
-	 * at all
-	 */
+	/* We use signalfd, and standard signals by handlers are completely blocked */
 	assert(pty->sigfd >= 0);
 
 	pfd[POLLFD_SIGNAL].fd = pty->sigfd;
@@ -602,7 +600,7 @@ int ul_pty_proxy_master(struct ul_pty *pty)
 				/* data */
 				if (pfd[i].revents & POLLIN)
 					rc = handle_io(pty, pfd[i].fd, &eof);
-				/* EOF maybe detected by two ways:
+				/* EOF maybe detected in two ways; they are as follows:
 				 *	A) poll() return POLLHUP event after close()
 				 *	B) read() returns 0 (no data)
 				 *

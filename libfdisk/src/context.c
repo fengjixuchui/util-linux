@@ -335,7 +335,7 @@ int fdisk_has_protected_bootbits(struct fdisk_context *cxt)
  * @enable: 1 or 0
  *
  * The library zeroizes all the first sector when create a new disk label by
- * default.  This function allows to control this behavior. For now it's
+ * default.  This function can be used to control this behavior. For now it's
  * supported for MBR and GPT.
  *
  * Returns: 0 on success, < 0 on error.
@@ -701,6 +701,8 @@ int fdisk_assign_device(struct fdisk_context *cxt,
  * The device has to be open O_RDWR on @readonly=0.
  *
  * Returns: 0 on success, < 0 on error.
+ *
+ * Since: 2.35
  */
 int fdisk_assign_device_by_fd(struct fdisk_context *cxt, int fd,
 			const char *fname, int readonly)
@@ -937,10 +939,21 @@ int fdisk_reread_changes(struct fdisk_context *cxt, struct fdisk_table *org)
 		}
 	}
 	for (i = 0; i < nadds; i++) {
+		uint64_t sz;
+
 		pa = add[i];
+		sz = pa->size * ssf;
+
 		DBG(PART, ul_debugobj(pa, "#%zu calling BLKPG_ADD_PARTITION", pa->partno));
+
+		if (fdisk_is_label(cxt, DOS) && fdisk_partition_is_container(pa))
+			/* Let's follow the Linux kernel and reduce
+                         * DOS extended partition to 1 or 2 sectors.
+			 */
+			sz = min(sz, (uint64_t) 2);
+
 		if (partx_add_partition(cxt->dev_fd, pa->partno + 1,
-					pa->start * ssf, pa->size * ssf) != 0) {
+					pa->start * ssf, sz) != 0) {
 			fdisk_warn(cxt, _("Failed to add partition %zu to system"), pa->partno + 1);
 			err++;
 		}

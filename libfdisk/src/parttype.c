@@ -155,7 +155,7 @@ struct fdisk_parttype *fdisk_label_get_parttype(const struct fdisk_label *lb, si
  *
  * Returns: return 0 on success, <0 on error, 2 for deprecated alias, 1 for @n out of range
  *
- * Since: v2.36
+ * Since: 2.36
  */
 int fdisk_label_get_parttype_shortcut(const struct fdisk_label *lb, size_t n,
 		const char **typestr, const char **shortcut, const char **alias)
@@ -438,7 +438,7 @@ struct fdisk_parttype *fdisk_label_advparse_parttype(
 	struct fdisk_parttype *res = NULL;
 	unsigned int code = 0;
 
-	if (!lb->nparttypes)
+	if (!lb || !lb->nparttypes)
 		return NULL;
 
 	DBG(LABEL, ul_debugobj(lb, "parsing '%s' (%s) type", str, lb->name));

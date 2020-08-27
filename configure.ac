@@ -29,7 +29,7 @@ PACKAGE_VERSION_RELEASE=$(echo $PACKAGE_VERSION | awk -F. '{
 
 dnl libblkid version
 LIBBLKID_VERSION="$PACKAGE_VERSION_MAJOR.$PACKAGE_VERSION_MINOR.$PACKAGE_VERSION_RELEASE"
-LIBBLKID_DATE="09-Jul-2020"
+LIBBLKID_DATE="23-Jul-2020"
 LIBBLKID_LT_MAJOR=1
 LIBBLKID_LT_MINOR=1
 LIBBLKID_LT_MICRO=0
@@ -189,6 +189,21 @@ AS_IF([test "x$enable_ubsan" = xyes], [
 ])
 AC_SUBST([UBSAN_LDFLAGS])
 
+AC_ARG_ENABLE([fuzzing-engine],
+  AS_HELP_STRING([--enable-fuzzing-engine], [compile with fuzzing engine]),
+  [], [enable_fuzzing_engine=no]
+)
+AS_IF([test "x$enable_fuzzing_engine" = xyes -a "x$LIB_FUZZING_ENGINE" = x], [
+  UL_WARN_ADD([-fno-omit-frame-pointer])
+  UL_WARN_ADD([-gline-tables-only])
+  UL_WARN_ADD([-fsanitize=fuzzer-no-link])
+  FUZZING_ENGINE_LDFLAGS="-fsanitize=fuzzer-no-link"
+])
+AC_SUBST([FUZZING_ENGINE_LDFLAGS])
+AC_PROG_CXX
+AM_CONDITIONAL([FUZZING_ENGINE], [test "x$enable_fuzzing_engine" = xyes])
+AM_CONDITIONAL([OSS_FUZZ], [test "x$LIB_FUZZING_ENGINE" != x])
+
 dnl libtool-2
 LT_INIT
 
@@ -343,6 +358,10 @@ AC_CHECK_HEADERS([security/pam_misc.h],
 ])
 
 AC_CHECK_HEADERS([linux/blkzoned.h])
+
+AC_CHECK_DECLS([BLK_ZONE_REP_CAPACITY], [], [], [
+	#include <linux/blkzoned.h>
+])
 
 AC_CHECK_HEADERS([security/openpam.h], [], [], [
 #ifdef HAVE_SECURITY_PAM_APPL_H
@@ -689,69 +708,6 @@ AS_CASE([$enable_all_programs],
 
 
 AX_CHECK_TLS
-
-AC_DEFUN([UL_SCANF_TYPE_MODIFIER], [dnl
-# include <stdio.h>
-# include <stdlib.h>
-int main()
-{
-	int i;
-	int rc = 1;
-	char *s;
-	i = sscanf("x", $1, &s);
-	if (i == 1  && *s == 'x')
-		rc = 0;
-	free(s);
-	return rc;
-}])
-
-AC_CACHE_VAL([scanf_cv_alloc_modifier],
-  AC_RUN_IFELSE([AC_LANG_SOURCE([UL_SCANF_TYPE_MODIFIER(["%ms"])])],
-    [scanf_cv_alloc_modifier=ms],
-    AC_RUN_IFELSE([AC_LANG_SOURCE([UL_SCANF_TYPE_MODIFIER(["%as"])])],
-      [scanf_cv_alloc_modifier=as],
-      [scanf_cv_alloc_modifier=no]
-    )
-    ,
-
-    [AC_COMPILE_IFELSE([AC_LANG_SOURCE([
-     #include <stdio.h>
-     #include <unistd.h>
-
-     #if defined(__GLIBC__) && !defined(__UCLIBC__)
-
-     #if !(__GLIBC_PREREQ(2, 7))
-     #error %m is not available
-     #endif
-
-     #elif defined(_POSIX_VERSION)
-
-     #if _POSIX_VERSION < 200809L
-     #error %m is not available
-     #endif
-
-     #else
-     #error Your C-library is not supported.
-     #endif
-     ])],
-    [scanf_cv_alloc_modifier=ms],
-    [scanf_cv_alloc_modifier=no])]
-  )
-)
-
-AC_MSG_CHECKING([scanf string alloc modifiers])
-AS_CASE([$scanf_cv_alloc_modifier],
-  [ms],
-    [AC_MSG_RESULT([(%ms) yes])
-     AC_DEFINE([HAVE_SCANF_MS_MODIFIER], [1], [scanf %ms modifier])
-     have_scanf_alloc_modifier=yes],
-  [as],
-    [AC_MSG_RESULT([(%as) yes])
-     have_scanf_alloc_modifier=yes
-     AC_DEFINE([HAVE_SCANF_AS_MODIFIER], [1], [scanf %as modifier])],
-  [AC_MSG_RESULT([no])
-   have_scanf_alloc_modifier=no]
-)
 
 have_pty=no
 AC_ARG_WITH([util], AS_HELP_STRING([--without-util], [compile without libutil]),
@@ -1127,7 +1083,6 @@ AC_ARG_ENABLE([libmount],
 )
 UL_BUILD_INIT([libmount])
 UL_REQUIRES_BUILD([libmount], [libblkid])
-UL_REQUIRES_HAVE([libmount], [scanf_alloc_modifier], [scanf string alloc modifier])
 UL_REQUIRES_HAVE([libmount], [dirfd,ddfd], [dirfd or ddfd function])
 AM_CONDITIONAL([BUILD_LIBMOUNT], [test "x$build_libmount" = xyes])
 AM_CONDITIONAL([BUILD_LIBMOUNT_TESTS], [test "x$build_libmount" = xyes -a "x$enable_static" = xyes])

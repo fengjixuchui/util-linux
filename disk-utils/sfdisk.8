@@ -26,7 +26,7 @@ sfdisk \- display or manipulate a disk partition table
 .SH DESCRIPTION
 .B sfdisk
 is a script-oriented tool for partitioning any block device.  It
-runs in interactive mode if executed on terminal (stdin refers to a terminal).
+runs in interactive mode if executed on a terminal (stdin refers to a terminal).
 
 Since version 2.26
 .B sfdisk
@@ -45,11 +45,15 @@ to alignment if the start offset is specified exactly in sectors and partition
 size relative or by multiplicative suffixes.
 
 The recommended way is not to specify start offsets at all and specify
-partition size in MiB, GiB (or so).  In this case sfdisk align all partitions
+partition size in MiB, GiB (or so).  In this case
+.B sfdisk
+aligns all partitions
 to block-device I/O limits (or when I/O limits are too small then to megabyte
 boundary to keep disk layout portable).  If this default behaviour is unwanted
 (usually for very small partitions) then specify offsets and sizes in
-sectors.  In this case sfdisk entirely follows specified numbers without any
+sectors.  In this case
+.B sfdisk
+entirely follows specified numbers without any
 optimization.
 .sp
 .B sfdisk
@@ -62,11 +66,15 @@ partitions.
 .B sfdisk
 uses BLKRRPART (reread partition table) ioctl to make sure that the device is
 not used by system or other tools (see also \-\-no-reread).  It's possible that
-this feature or another sfdisk activity races with \fBudevd\fR.  The recommended way
+this feature or another
+.B sfdisk
+activity races with \fBudevd\fR.  The recommended way
 how to avoid possible collisions is to use \fB\-\-lock\fR option.
 The exclusive lock will cause udevd to skip the event handling on the device.
 .PP
-The sfdisk prompt is only a hint for users and a displayed partition number does
+The
+.B sfdisk
+prompt is only a hint for users and a displayed partition number does
 not mean that the same partition table entry will be created (if -N not
 specified), especially for tables with gaps.
 
@@ -96,8 +104,10 @@ bootable flag on all unspecified partitions. The special placeholder '\-'
 may be used instead of the partition numbers to switch off the bootable flag
 on all partitions.
 
-The activation command is supported for MBR and PMBR only.  If GPT label is detected
-than sfdisk prints warning and automatically enter PMBR.
+The activation command is supported for MBR and PMBR only.
+If a GPT label is detected, then
+.B sfdisk
+prints warning and automatically enters PMBR.
 
 If no \fIpartition-number\fR is specified, then list the partitions with an
 enabled flag.
@@ -267,7 +277,9 @@ and the last command reorders partitions to match disk order
 
 .TP
 .B \-\-move\-use\-fsync
-Use fsync system call after each write when move data to a new location by
+Use the
+.BR fsync (2)
+system call after each write when moving data to a new location by
 \fB\-\-move\-data\fR.
 .TP
 .BR \-o , " \-\-output " \fIlist
@@ -296,7 +308,6 @@ disk label (see the \fBEMPTY DISK LABEL\fR section below).
 .BR \-Y , " \-\-label\-nested " \fItype
 Force editing of a nested disk label.  The primary disk label has to exist already.
 This option allows editing for example a hybrid/protective MBR on devices with GPT.
-
 .TP
 .BR \-w , " \-\-wipe "\fIwhen
 Wipe filesystem, RAID and partition-table signatures from the device, in order
@@ -306,7 +317,7 @@ to avoid possible collisions.  The argument \fIwhen\fR can be \fBauto\fR,
 except the old partition-table signatures which are always wiped before create
 a new partition-table if the argument \fIwhen\fR is not \fBnever\fR. In all
 cases detected signatures are reported by warning messages before a new
-partition table is created.  See also
+partition table is created.  See also the
 .BR wipefs (8)
 command.
 
@@ -333,17 +344,14 @@ Display help text and exit.
 .B sfdisk
 supports two input formats and generic header lines.
 
-.B Header lines
-.RS
+.SS Header lines
 The optional header lines specify generic information that apply to the partition
 table.  The header-line format is:
-.RS
 .sp
 .B "<name>: <value>"
 .sp
 .RE
 The currently recognized headers are:
-.RS
 .TP
 .B unit
 Specify the partitioning unit.  The only supported unit is \fBsectors\fR.
@@ -373,14 +381,11 @@ modify this variable if you're not sure.
 Specify sector size. This header is informative only and it is not used when
 sfdisk creates a new partition table, in this case the real device specific
 value is always used and sector size from the dump is ignored.
-.RE
-.sp
+.PP
 Note that it is only possible to use header lines before the first partition
 is specified in the input.
-.RE
-
-.B Unnamed-fields format
-.RS
+.SS Unnamed-fields format
+\&
 .RS
 .sp
 .I start size type bootable
@@ -419,7 +424,9 @@ The partition
 is given in hex for MBR (DOS) where 0x prefix is optional; a GUID string for
 GPT; a shortcut or an alias. It's recommended to use two letters for MBR hex codes to
 avoid collision between deprecated shortcut 'E' and '0E' MBR hex code. For backward
-compatibility sfdisk tries to interpret
+compatibility
+.B sfdisk
+tries to interpret
 .I type
 as a shortcut as a first possibility in partitioning scripts although on other places (e.g.
 \fB\-\-part-type command)\fR it tries shortcuts as the last possibility.
@@ -428,7 +435,6 @@ Since v2.36 libfdisk supports partition type aliases as extension to shortcuts. 
 simple human readable word (e.g. "linux").
 
 Supported shortcuts and aliases:
-.RS
 .TP
 .B L - alias 'linux'
 Linux; means 83 for MBR and 0FC63DAF-8483-4772-8E79-3D69D8477DE4 for GPT.
@@ -451,7 +457,6 @@ Linux RAID; means FD for MBR and A19D880F-05FC-4D3B-A006-743F0F84911E for GPT
 .TP
 .B V - alias 'lvm'
 LVM; means 8E for MBR and E6D6D379-F507-44C2-A23C-238F2A3DF928 for GPT
-.RE
 .PP
 The default
 .I type
@@ -465,10 +470,7 @@ is specified as [\fB*\fR|\fB-\fR], with as default not-bootable.  The
 value of this field is irrelevant for Linux - when Linux runs it has
 been booted already - but it might play a role for certain boot
 loaders and for other operating systems.
-.RE
-
-.B Named-fields format
-.RS
+.SS Named-fields format
 This format is more readable, robust, extensible and allows specifying additional
 information (e.g., a UUID).  It is recommended to use this format to keep your scripts
 more readable.
@@ -488,7 +490,6 @@ The
 .I value
 can be between quotation marks (e.g., name="This is partition name").
 The currently supported fields are:
-.RS
 .TP
 .BI start= number
 The first non-assigned sector aligned according to device I/O limits.  The default
@@ -518,9 +519,6 @@ GPT partition name.
 A hexadecimal number (without 0x) for an MBR partition, a GUID for a GPT partition,
 or a shortcut as for unnamed-fields format.
 For backward compatibility the \fBId=\fR field has the same meaning.
-.RE
-.RE
-
 .SH EMPTY DISK LABEL
 .B sfdisk
 does not create partition table without partitions by default. The lines with
@@ -602,7 +600,9 @@ The welcome message.
 
 .SH ENVIRONMENT
 .IP SFDISK_DEBUG=all
-enables sfdisk debug output.
+enablescw
+.B sfdisk
+debug output.
 .IP LIBFDISK_DEBUG=all
 enables libfdisk debug output.
 .IP LIBBLKID_DEBUG=all

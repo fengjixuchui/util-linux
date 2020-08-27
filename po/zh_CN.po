@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the util-linux package.
 # Ray Wang <wanglei1123@gmail.com>, 2008.
 # Wylmer Wang <wantinghard@gmail.com>, 2012, 2013, 2014, 2015, 2016.
-# Boyuan Yang <073plan@gmail.com>, 2019.
+# Boyuan Yang <073plan@gmail.com>, 2019, 2020.
 msgid ""
 msgstr ""
-"Project-Id-Version: util-linux-2.34-rc2\n"
+"Project-Id-Version: util-linux-2.36-rc2\n"
 "Report-Msgid-Bugs-To: util-linux@vger.kernel.org\n"
-"POT-Creation-Date: 2020-07-09 12:08+0200\n"
-"PO-Revision-Date: 2019-12-07 12:48-0500\n"
+"POT-Creation-Date: 2020-07-22 12:05+0200\n"
+"PO-Revision-Date: 2020-07-12 22:32-0400\n"
 "Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Bugs: Report translation errors to the Language-Team address.\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.2.4\n"
+"X-Generator: Poedit 2.3.1\n"
 
 #: disk-utils/addpart.c:15
 #, c-format
@@ -251,7 +251,7 @@ msgstr "%s 成功。\n"
 #. TRANSLATORS: Start sector not available. Max. 10 letters.
 #: disk-utils/blockdev.c:481
 msgid "N/A"
-msgstr ""
+msgstr "N/A"
 
 #: disk-utils/blockdev.c:505
 #, c-format
@@ -677,18 +677,18 @@ msgid "Display or manipulate a disk partition table.\n"
 msgstr "显示或操作磁盘分区表。\n"
 
 #: disk-utils/cfdisk.c:2648
-#, fuzzy, c-format
+#, c-format
 msgid " -L, --color[=<when>]     colorize output (%s, %s or %s)\n"
-msgstr " -L, --color[=<何时>]     彩色输出(auto自动，always总是或never从不)\n"
+msgstr " -L, --color[=<时机>]     彩色输出（%s, %s 或 %s）\n"
 
 #: disk-utils/cfdisk.c:2651
 msgid " -z, --zero               start with zeroed partition table\n"
 msgstr " -z, --zero              以空分区表开始\n"
 
 #: disk-utils/cfdisk.c:2653
-#, fuzzy, c-format
+#, c-format
 msgid "     --lock[=<mode>]      use exclusive device lock (%s, %s or %s)\n"
-msgstr "     --color[=<何时>]     彩色输出(auto，always 或 never)\n"
+msgstr "     --lock[=<模式>]      使用独占设备锁（%s、%s 或 %s）\n"
 
 #: disk-utils/cfdisk.c:2694 disk-utils/fdisk.c:1016 disk-utils/sfdisk.c:2305
 #: misc-utils/cal.c:436 sys-utils/dmesg.c:1437 text-utils/hexdump.c:114
@@ -892,14 +892,12 @@ msgid " [Y]es/[N]o: "
 msgstr "是[Y]/否[N]："
 
 #: disk-utils/fdisk.c:486
-#, fuzzy
 msgid "Hex code or alias (type L to list all): "
-msgstr "Hex 代码(输入 L 列出所有代码)："
+msgstr "Hex 代码或别名（输入 L 列出所有代码）："
 
 #: disk-utils/fdisk.c:487
-#, fuzzy
 msgid "Partition type or alias (type L to list all): "
-msgstr "分区类型(输入 L 列出所有类型)："
+msgstr "分区类型或别名（输入 L 列出所有类型）："
 
 #: disk-utils/fdisk.c:490
 msgid "Hex code (type L to list all codes): "
@@ -919,6 +917,8 @@ msgid ""
 "\n"
 "Aliases:\n"
 msgstr ""
+"\n"
+"别名：\n"
 
 #: disk-utils/fdisk.c:627
 msgid "DOS Compatibility flag is set (DEPRECATED!)"
@@ -975,9 +975,9 @@ msgid "BLKGETSIZE ioctl failed on %s"
 msgstr "对 %s 进行 BLKGETSIZE ioctl 失败"
 
 #: disk-utils/fdisk.c:834
-#, fuzzy, c-format
+#, c-format
 msgid "The device contains '%s' signature and it will be removed by a write command. See fdisk(8) man page and --wipe option for more details."
-msgstr "设备已包含一个 %s 签名；写入命令会将其移除。"
+msgstr "设备已包含一个 '%s' 签名，写入命令会将其移除。请参见 fdisk(8) 的手册页和 --wipe 选项以了解更多细节。"
 
 #: disk-utils/fdisk.c:839
 #, fuzzy, c-format
@@ -1006,9 +1006,9 @@ msgid " -c, --compatibility[=<mode>]  mode is 'dos' or 'nondos' (default)\n"
 msgstr " -c, --compatibility[=<模式>]  模式，为“dos”或“nondos”(默认)\n"
 
 #: disk-utils/fdisk.c:864
-#, fuzzy, c-format
+#, c-format
 msgid " -L, --color[=<when>]          colorize output (%s, %s or %s)\n"
-msgstr " -L, --color[=<时机>]          彩色输出(auto, always 或 never)\n"
+msgstr " -L, --color[=<时机>]          彩色输出（%s, %s 或 %s）\n"
 
 #: disk-utils/fdisk.c:867
 msgid " -l, --list                    display partitions and exit\n"
@@ -1045,19 +1045,19 @@ msgid "     --bytes                   print SIZE in bytes rather than in human r
 msgstr "     -b, --bytes                   以字节为单位而非易读的格式来打印 SIZE\n"
 
 #: disk-utils/fdisk.c:877
-#, fuzzy, c-format
+#, c-format
 msgid "     --lock[=<mode>]           use exclusive device lock (%s, %s or %s)\n"
-msgstr "     --color[=<何时>]     彩色输出(auto，always 或 never)\n"
+msgstr "     --lock[=<模式>]           使用独占设备锁（%s、%s 或 %s）\n"
 
 #: disk-utils/fdisk.c:879
-#, fuzzy, c-format
+#, c-format
 msgid " -w, --wipe <mode>             wipe signatures (%s, %s or %s)\n"
-msgstr " -w, --wipe <模式>             擦除签名(auto, always 或 never)\n"
+msgstr " -w, --wipe <模式>             擦除签名（%s, %s 或 %s）\n"
 
 #: disk-utils/fdisk.c:881 disk-utils/sfdisk.c:2059
-#, fuzzy, c-format
+#, c-format
 msgid " -W, --wipe-partitions <mode>  wipe signatures from new partitions (%s, %s or %s)\n"
-msgstr " -W, --wipe-partitions <模式>  擦除新分区的签名(auto, always 或 never)\n"
+msgstr " -W, --wipe-partitions <模式>  擦除新分区的签名(%s, %s 或 %s)\n"
 
 #: disk-utils/fdisk.c:884
 msgid " -C, --cylinders <number>      specify the number of cylinders\n"
@@ -1201,7 +1201,7 @@ msgstr "分配迭代器失败"
 
 #: disk-utils/fdisk-list.c:126 disk-utils/fdisk-list.c:247
 #: disk-utils/partx.c:669 login-utils/lslogins.c:1066 misc-utils/fincore.c:356
-#: misc-utils/findmnt.c:1634 misc-utils/lsblk.c:2082 misc-utils/lslocks.c:456
+#: misc-utils/findmnt.c:1634 misc-utils/lsblk.c:2083 misc-utils/lslocks.c:456
 #: misc-utils/uuidparse.c:252 misc-utils/wipefs.c:157 sys-utils/losetup.c:325
 #: sys-utils/lscpu.c:1674 sys-utils/lscpu.c:1902 sys-utils/lscpu.c:2034
 #: sys-utils/lsipc.c:351 sys-utils/prlimit.c:297 sys-utils/rfkill.c:459
@@ -1595,6 +1595,8 @@ msgid ""
 "\n"
 "All unwritten changes will be lost, do you really want to quit? "
 msgstr ""
+"\n"
+"所有未写入的修改均会丢失，您确认要退出吗？"
 
 #: disk-utils/fdisk-menu.c:449
 #, c-format
@@ -2904,26 +2906,23 @@ msgstr "执行 %s 失败"
 #: disk-utils/mkfs.cramfs.c:128
 #, c-format
 msgid " %s [-h] [-v] [-b blksize] [-e edition] [-N endian] [-i file] [-n name] dirname outfile\n"
-msgstr ""
+msgstr " %s [-h] [-v] [-b blksize] [-e edition] [-N endian] [-i file] [-n 名称] dirname outfile\n"
 
 #: disk-utils/mkfs.cramfs.c:131
-#, fuzzy
 msgid "Make compressed ROM file system."
-msgstr "检查并修复压缩的 ROM 文件系统。\n"
+msgstr "制作压缩的 ROM 文件系统"
 
 #: disk-utils/mkfs.cramfs.c:133
-#, fuzzy
 msgid " -v             be verbose"
 msgstr " -v             详尽模式"
 
 #: disk-utils/mkfs.cramfs.c:134
 msgid " -E             make all warnings errors (non-zero exit status)"
-msgstr ""
+msgstr " -E             将所有警告当作错误（以非零退出值返回）"
 
 #: disk-utils/mkfs.cramfs.c:135
-#, fuzzy
 msgid " -b blksize     use this blocksize, must equal page size"
-msgstr " -b, --blocksize <大小>   使用指定的块大小，默认为页的大小\n"
+msgstr " -b blksize     使用指定的块大小，必须等于页的大小"
 
 #: disk-utils/mkfs.cramfs.c:136
 msgid " -e edition     set edition number (part of fsid)"
@@ -2940,9 +2939,8 @@ msgid " -i file        insert a file image into the filesystem"
 msgstr " -i, --inodes <数字>     文件系统的 inode 数\n"
 
 #: disk-utils/mkfs.cramfs.c:139
-#, fuzzy
 msgid " -n name        set name of cramfs filesystem"
-msgstr " -A         检查所有文件系统\n"
+msgstr " -n 名称        设置 cramfs 文件系统的名称"
 
 #: disk-utils/mkfs.cramfs.c:140
 #, fuzzy, c-format
@@ -2960,11 +2958,11 @@ msgstr " -f           不分割长行\n"
 
 #: disk-utils/mkfs.cramfs.c:143
 msgid " dirname        root of the filesystem to be compressed"
-msgstr ""
+msgstr " dirname        要压缩的文件系统的根"
 
 #: disk-utils/mkfs.cramfs.c:144
 msgid " outfile        output file"
-msgstr ""
+msgstr " outfile        输出文件"
 
 #: disk-utils/mkfs.cramfs.c:162
 #, c-format
@@ -3361,7 +3359,7 @@ msgstr ""
 #: disk-utils/mkswap.c:166 disk-utils/sfdisk.c:2048
 #, fuzzy, c-format
 msgid "     --lock[=<mode>]       use exclusive device lock (%s, %s or %s)\n"
-msgstr "     --color[=<何时>]     彩色输出(auto，always 或 never)\n"
+msgstr "     --color[=<何时>]     彩色输出（%s, %s 或 %s）\n"
 
 #: disk-utils/mkswap.c:179
 #, c-format
@@ -3691,7 +3689,7 @@ msgid_plural "#%2d: %9ju-%9ju (%9ju sectors, %6ju MB)\n"
 msgstr[0] "#%2d：%9ju-%9ju (%9ju 扇区%6ju MB)\n"
 
 #: disk-utils/partx.c:680 misc-utils/fincore.c:370 misc-utils/findmnt.c:1662
-#: misc-utils/lsblk.c:2121 misc-utils/lslocks.c:471 sys-utils/losetup.c:339
+#: misc-utils/lsblk.c:2122 misc-utils/lslocks.c:471 sys-utils/losetup.c:339
 #: sys-utils/lscpu.c:1683 sys-utils/lscpu.c:1911 sys-utils/prlimit.c:306
 #: sys-utils/rfkill.c:471 sys-utils/swapon.c:292 sys-utils/wdctl.c:310
 msgid "failed to allocate output column"
@@ -3981,9 +3979,8 @@ msgid "new partition is smaller than original; ignoring --move-data"
 msgstr "新分区小于原分区；将忽略 --move-data"
 
 #: disk-utils/sfdisk.c:471
-#, fuzzy
 msgid "Data move: (--no-act)"
-msgstr "数据移动︰"
+msgstr "数据移动︰（--no-act）"
 
 #: disk-utils/sfdisk.c:471
 msgid "Data move:"
@@ -4044,7 +4041,7 @@ msgstr ""
 
 #: disk-utils/sfdisk.c:626
 msgid "Your data has not been moved (--no-act)."
-msgstr ""
+msgstr "您的数据未被移动（--no-act）。"
 
 #: disk-utils/sfdisk.c:628
 #, fuzzy, c-format
@@ -4587,16 +4584,16 @@ msgstr "     --move-data[=<typescript>] 重新定位后移动分区数据(需要
 
 #: disk-utils/sfdisk.c:2040
 msgid "     --move-use-fsync      use fsync after each write when move data\n"
-msgstr ""
+msgstr "     --move-use-fsync      移动数据每次写入后调用 fsync\n"
 
 #: disk-utils/sfdisk.c:2041
 msgid " -f, --force               disable all consistency checking\n"
 msgstr " -f, --force               禁用所有的一致性检查\n"
 
 #: disk-utils/sfdisk.c:2044
-#, fuzzy, c-format
+#, c-format
 msgid "     --color[=<when>]      colorize output (%s, %s or %s)\n"
-msgstr "     --color[=<何时>]     彩色输出(auto，always 或 never)\n"
+msgstr "     --color[=<何时>]     彩色输出（%s, %s 或 %s）\n"
 
 #: disk-utils/sfdisk.c:2049
 msgid " -N, --partno <num>        specify partition number\n"
@@ -4627,9 +4624,9 @@ msgid " -q, --quiet               suppress extra info messages\n"
 msgstr " -q, --quiet               禁止输出额外信息\n"
 
 #: disk-utils/sfdisk.c:2057
-#, fuzzy, c-format
+#, c-format
 msgid " -w, --wipe <mode>         wipe signatures (%s, %s or %s)\n"
-msgstr " -w, --wipe <模式>         擦除签名(auto, always 或 never)\n"
+msgstr " -w, --wipe <模式>         擦除签名（%s, %s 或 %s）\n"
 
 #: disk-utils/sfdisk.c:2060
 msgid " -X, --label <name>        specify label type (dos, gpt, ...)\n"
@@ -5019,9 +5016,8 @@ msgid "Apple HFS/HFS+"
 msgstr "Apple HFS/HFS+"
 
 #: include/pt-gpt-partnames.h:85
-#, fuzzy
 msgid "Apple APFS"
-msgstr "Apple UFS"
+msgstr "Apple APFS"
 
 #: include/pt-gpt-partnames.h:86
 msgid "Apple UFS"
@@ -5223,11 +5219,11 @@ msgstr "Plan 9 分区"
 
 #: include/pt-gpt-partnames.h:156
 msgid "HiFive Unleashed FSBL"
-msgstr ""
+msgstr "HiFive Unleashed FSBL"
 
 #: include/pt-gpt-partnames.h:157
 msgid "HiFive Unleashed BBL"
-msgstr ""
+msgstr "HiFive Unleashed BBL"
 
 #: include/pt-mbr-partnames.h:1
 msgid "Empty"
@@ -5815,7 +5811,7 @@ msgstr "磁盘标签已写入 %s。(不要忘了也写入 %s 磁盘标签。)"
 msgid "Disklabel written to %s."
 msgstr "磁盘标签已写入 %s。"
 
-#: libfdisk/src/bsd.c:920 libfdisk/src/context.c:751
+#: libfdisk/src/bsd.c:920 libfdisk/src/context.c:753
 msgid "Syncing disks."
 msgstr "正在同步磁盘。"
 
@@ -5844,59 +5840,59 @@ msgstr "Bsize"
 msgid "Cpg"
 msgstr "Cpg"
 
-#: libfdisk/src/context.c:741
-#, fuzzy, c-format
+#: libfdisk/src/context.c:743
+#, c-format
 msgid "%s: fsync device failed"
-msgstr "%s：关闭设备失败"
+msgstr "%s：设备 fsync 失败"
 
-#: libfdisk/src/context.c:746
+#: libfdisk/src/context.c:748
 #, c-format
 msgid "%s: close device failed"
 msgstr "%s：关闭设备失败"
 
-#: libfdisk/src/context.c:826
+#: libfdisk/src/context.c:828
 msgid "Calling ioctl() to re-read partition table."
 msgstr "将调用 ioctl() 来重新读分区表。"
 
-#: libfdisk/src/context.c:834
+#: libfdisk/src/context.c:836
 msgid "Re-reading the partition table failed."
 msgstr "重新读取分区表失败。"
 
-#: libfdisk/src/context.c:836
+#: libfdisk/src/context.c:838
 #, fuzzy
 msgid "The kernel still uses the old table. The new table will be used at the next reboot or after you run partprobe(8) or partx(8)."
 msgstr "内核仍在使用旧分区表。新分区表将在下次重启或运行 partprobe(8) 或 kpartx(8) 后生效。"
 
-#: libfdisk/src/context.c:926
+#: libfdisk/src/context.c:928
 #, c-format
 msgid "Failed to remove partition %zu from system"
 msgstr "从系统上移除分区 %zu 时失败"
 
-#: libfdisk/src/context.c:935
+#: libfdisk/src/context.c:937
 #, c-format
 msgid "Failed to update system information about partition %zu"
 msgstr "更新系统中有关分区 %zu 的信息时失败"
 
-#: libfdisk/src/context.c:944
+#: libfdisk/src/context.c:946
 #, c-format
 msgid "Failed to add partition %zu to system"
 msgstr "添加分区 %zu 至系统时失败"
 
-#: libfdisk/src/context.c:950
+#: libfdisk/src/context.c:952
 msgid "The kernel still uses the old partitions. The new table will be used at the next reboot. "
 msgstr "内核仍在使用旧分区。新分区表将在下次重启后生效。"
 
-#: libfdisk/src/context.c:1161
+#: libfdisk/src/context.c:1163
 msgid "cylinder"
 msgid_plural "cylinders"
 msgstr[0] "柱面"
 
-#: libfdisk/src/context.c:1162
+#: libfdisk/src/context.c:1164
 msgid "sector"
 msgid_plural "sectors"
 msgstr[0] "扇区"
 
-#: libfdisk/src/context.c:1518
+#: libfdisk/src/context.c:1520
 msgid "Incomplete geometry setting."
 msgstr "不完整的几何属性设置。"
 
@@ -6332,9 +6328,8 @@ msgid "The end of the partition oversteps LastUsableLBA."
 msgstr "分区终点超过了最后可用 LBA。"
 
 #: libfdisk/src/gpt.c:2117
-#, fuzzy
 msgid "The device contains hybrid MBR -- writing GPT only."
-msgstr "该设备包含混合 MBR -- 将只写入 GPT。您需要手动同步 MBR。"
+msgstr "该设备包含混合 MBR -- 将只写入 GPT。"
 
 #: libfdisk/src/gpt.c:2153
 msgid "Disk does not contain a valid backup header."
@@ -6468,9 +6463,9 @@ msgid "The partition entry size is zero."
 msgstr "分区条目大小为零。"
 
 #: libfdisk/src/gpt.c:2758
-#, fuzzy, c-format
+#, c-format
 msgid "The number of the partition has to be smaller than %zu."
-msgstr "已创建分区达到最大数量。"
+msgstr "分区数量必须小于 %zu。"
 
 #: libfdisk/src/gpt.c:2782
 msgid "Cannot allocate memory!"
@@ -6984,14 +6979,14 @@ msgid "%s is already mounted"
 msgstr "%s 已经挂载"
 
 #: libmount/src/context_mount.c:1672
-#, fuzzy, c-format
+#, c-format
 msgid "can't find in %s"
-msgstr "在 %2$s 中找不到 %1$s"
+msgstr "无法在 %s 中找到"
 
 #: libmount/src/context_mount.c:1675
-#, fuzzy, c-format
+#, c-format
 msgid "can't find mount point in %s"
-msgstr "在 %2$s 中找不到挂载点 %1$s"
+msgstr "无法在 %s 中找到挂载点"
 
 #: libmount/src/context_mount.c:1678
 #, c-format
@@ -7004,9 +6999,9 @@ msgid "more filesystems detected on %s; use -t <type> or wipefs(8)"
 msgstr "%s 上探测到了更多文件系统；请使用 -t <类型> 或 wipefs(8)"
 
 #: libmount/src/context_mount.c:1688
-#, fuzzy, c-format
+#, c-format
 msgid "failed to determine filesystem type"
-msgstr "%s：确定源失败"
+msgstr "无法确定文件系统类型"
 
 #: libmount/src/context_mount.c:1689
 #, c-format
@@ -7241,9 +7236,9 @@ msgid "umount failed: %m"
 msgstr "挂载失败：%m"
 
 #: libmount/src/context_umount.c:1282
-#, fuzzy, c-format
+#, c-format
 msgid "filesystem was unmounted, but failed to update userspace mount table"
-msgstr "%s：文件系统已卸载，但 mount(8) 失败"
+msgstr "文件系统已卸载，但更新用户空间挂载表失败"
 
 #: libmount/src/context_umount.c:1288
 #, fuzzy, c-format
@@ -7849,9 +7844,9 @@ msgid " -H             suppress hostname in the login prompt"
 msgstr " -H             在登录提示符中不显示主机名"
 
 #: login-utils/login.c:1228
-#, fuzzy, c-format
+#, c-format
 msgid "%s: timed out after %u seconds"
-msgstr "%u 秒后超时"
+msgstr "%s：%u 秒后超时"
 
 #: login-utils/login.c:1255
 #, c-format
@@ -8226,9 +8221,8 @@ msgid " -o, --output[=<list>]    define the columns to output\n"
 msgstr " -o, --output[=<列表>]    定义要输出的列\n"
 
 #: login-utils/lslogins.c:1396
-#, fuzzy
 msgid "     --output-all         output all columns\n"
-msgstr " -O, --output-all     输出所有列\n"
+msgstr "     --output-all         输出所有列\n"
 
 #: login-utils/lslogins.c:1397
 msgid " -p, --pwd                display information related to login by password.\n"
@@ -8338,9 +8332,8 @@ msgid "Politely refuse a login.\n"
 msgstr "客气的拒绝登录。\n"
 
 #: login-utils/nologin.c:33
-#, fuzzy
 msgid " -c, --command <command>  does nothing (for compatibility with su -c)\n"
-msgstr " -c, --command <命令>            使用 -c 向 shell 传递一条命令\n"
+msgstr " -c, --command <命令>     无操作（用于保持与 su -c 的兼容性）\n"
 
 #: login-utils/nologin.c:113
 #, c-format
@@ -8352,18 +8345,16 @@ msgid " (core dumped)"
 msgstr " (核心已转储)"
 
 #: login-utils/su-common.c:349
-#, fuzzy
 msgid "failed to modify environment"
-msgstr "打开目录失败"
+msgstr "修改环境失败"
 
 #: login-utils/su-common.c:385
 msgid "may not be used by non-root users"
 msgstr "非 root 用户不能使用"
 
 #: login-utils/su-common.c:409
-#, fuzzy
 msgid "authentication failed"
-msgstr "tcgetattr 失败"
+msgstr "验证失败"
 
 #: login-utils/su-common.c:422
 #, c-format
@@ -8428,9 +8419,8 @@ msgid " ...killed.\n"
 msgstr " ...已杀死。\n"
 
 #: login-utils/su-common.c:683
-#, fuzzy
 msgid "failed to set the PATH environment variable"
-msgstr "设置环境变量 %s 失败"
+msgstr "设置 PATH 环境变量失败"
 
 #: login-utils/su-common.c:760
 msgid "cannot set groups"
@@ -8450,9 +8440,8 @@ msgid "cannot set user id"
 msgstr "无法设置 用户 id"
 
 #: login-utils/su-common.c:846
-#, fuzzy
 msgid " -m, -p, --preserve-environment      do not reset environment variables\n"
-msgstr " -m, -p, --preserve-environment  不重置环境变量\n"
+msgstr " -m, -p, --preserve-environment      不重置环境变量\n"
 
 #: login-utils/su-common.c:847
 #, fuzzy
@@ -8495,9 +8484,8 @@ msgid " -s, --shell <shell>             run <shell> if /etc/shells allows it\n"
 msgstr " -s, --shell <shell>             若 /etc/shells 允许，运行<shell>\n"
 
 #: login-utils/su-common.c:860
-#, fuzzy
 msgid " -P, --pty                       create a new pseudo-terminal\n"
-msgstr "                                 而不创建新会话\n"
+msgstr ""
 
 #: login-utils/su-common.c:870
 #, fuzzy, c-format
@@ -8552,9 +8540,8 @@ msgid "group %s does not exist"
 msgstr "组 %s 不存在"
 
 #: login-utils/su-common.c:1058
-#, fuzzy
 msgid "--pty is not supported for your system"
-msgstr "您的系统不支持 --reload"
+msgstr "--pty 在您的系统上不受支持"
 
 #: login-utils/su-common.c:1092
 msgid "ignoring --preserve-environment, it's mutually exclusive with --login"
@@ -8583,9 +8570,8 @@ msgid "using restricted shell %s"
 msgstr "将使用受限 shell %s"
 
 #: login-utils/su-common.c:1186
-#, fuzzy
 msgid "failed to allocate pty handler"
-msgstr "分配脚本处理程序失败"
+msgstr ""
 
 #: login-utils/su-common.c:1208
 #, c-format
@@ -8726,9 +8712,9 @@ msgstr ""
 "\n"
 
 #: login-utils/utmpdump.c:173
-#, fuzzy, c-format
+#, c-format
 msgid "%s: cannot get file position"
-msgstr "%s：不能删除分区"
+msgstr "%s：无法获取文件位置"
 
 #: login-utils/utmpdump.c:177
 #, c-format
@@ -8910,9 +8896,8 @@ msgid " -L, --label <label>        convert LABEL to device name\n"
 msgstr " -s, --size <尺寸>         设备尺寸\n"
 
 #: misc-utils/blkid.c:88
-#, fuzzy
 msgid " -U, --uuid <uuid>          convert UUID to device name\n"
-msgstr " -u, --user <用户>             用户名\n"
+msgstr " -U, --uuid <uuid>          将 UUID 转换为设备名\n"
 
 #: misc-utils/blkid.c:90
 #, fuzzy
@@ -8950,9 +8935,8 @@ msgid " -n, --match-types <list>   filter by filesystem type (e.g. -n vfat,ext3)
 msgstr " -t, --types <列表>      限制文件系统集合\n"
 
 #: misc-utils/blkid.c:97
-#, fuzzy
 msgid " -D, --no-part-details      don't print info from partition table\n"
-msgstr " -n, --noheadings       不打印列标题\n"
+msgstr " -D, --no-part-details      不要打印来自分区表的信息\n"
 
 #: misc-utils/blkid.c:103
 msgid "<size> and <offset>"
@@ -8976,9 +8960,9 @@ msgid "(not mounted)"
 msgstr "（未挂载）"
 
 #: misc-utils/blkid.c:509 misc-utils/blkid.c:515
-#, fuzzy, c-format
+#, c-format
 msgid "error: %s"
-msgstr "解析错误：%s"
+msgstr "错误：%s"
 
 #: misc-utils/blkid.c:558
 #, c-format
@@ -8995,9 +8979,9 @@ msgid "error: -u <list> argument is empty"
 msgstr ""
 
 #: misc-utils/blkid.c:770
-#, fuzzy, c-format
+#, c-format
 msgid "unsupported output format %s"
-msgstr "不支持的参数格式：%s"
+msgstr "不支持的输出格式：%s"
 
 #: misc-utils/blkid.c:773 misc-utils/wipefs.c:748
 msgid "invalid offset argument"
@@ -9173,14 +9157,12 @@ msgid "file data resident in memory in bytes"
 msgstr ""
 
 #: misc-utils/fincore.c:63
-#, fuzzy
 msgid "size of the file"
-msgstr "磁盘容量"
+msgstr "文件大小"
 
 #: misc-utils/fincore.c:64
-#, fuzzy
 msgid "file name"
-msgstr "文件名"
+msgstr "文件名称"
 
 #: misc-utils/fincore.c:174
 #, fuzzy, c-format
@@ -9188,19 +9170,19 @@ msgid "failed to do mincore: %s"
 msgstr "读符号链接失败：%s"
 
 #: misc-utils/fincore.c:210
-#, fuzzy, c-format
+#, c-format
 msgid "failed to do mmap: %s"
-msgstr "读取失败︰ %s"
+msgstr "进行 mmap 失败：%s"
 
 #: misc-utils/fincore.c:236
-#, fuzzy, c-format
+#, c-format
 msgid "failed to open: %s"
-msgstr "解析 %s 失败"
+msgstr "打开失败：%s"
 
 #: misc-utils/fincore.c:241
-#, fuzzy, c-format
+#, c-format
 msgid "failed to do fstat: %s"
-msgstr "读取失败︰ %s"
+msgstr "进行 fstat 失败：%s"
 
 #: misc-utils/fincore.c:262
 #, c-format
@@ -9208,9 +9190,8 @@ msgid " %s [options] file...\n"
 msgstr " %s [选项] 文件...\n"
 
 #: misc-utils/fincore.c:265
-#, fuzzy
 msgid " -J, --json            use JSON output format\n"
-msgstr " -J, --json              使用 JSON 输出格式\n"
+msgstr " -J, --json            使用 JSON 输出格式\n"
 
 #: misc-utils/fincore.c:266
 #, fuzzy
@@ -9228,9 +9209,8 @@ msgid " -o, --output <list>   output columns\n"
 msgstr " -o, --output <列表>  输出列\n"
 
 #: misc-utils/fincore.c:269
-#, fuzzy
 msgid " -r, --raw             use raw output format\n"
-msgstr " -r, --raw              使用原生输出格式\n"
+msgstr " -r, --raw             使用原始输出格式\n"
 
 #: misc-utils/fincore.c:338 sys-utils/losetup.c:820
 msgid "no file specified"
@@ -10092,9 +10072,9 @@ msgid "invalid signal name or number: %s"
 msgstr "无效的信号名或数字：%s"
 
 #: misc-utils/kill.c:395
-#, fuzzy, c-format
+#, c-format
 msgid "pidfd_open() failed: %d"
-msgstr "写失败：%d"
+msgstr "pidfd_open() 失败：%d"
 
 #: misc-utils/kill.c:400 misc-utils/kill.c:414
 #, fuzzy
@@ -10380,9 +10360,8 @@ msgid "path to the device node"
 msgstr "到设备节点的路径"
 
 #: misc-utils/lsblk.c:164
-#, fuzzy
 msgid "filesystem version"
-msgstr "文件系统大小"
+msgstr "文件系统版本"
 
 #: misc-utils/lsblk.c:166 sys-utils/zramctl.c:86
 msgid "where the device is mounted"
@@ -10406,9 +10385,8 @@ msgid "partition type code or UUID"
 msgstr "分区类型 UUID"
 
 #: misc-utils/lsblk.c:174
-#, fuzzy
 msgid "partition type name"
-msgstr "分区名"
+msgstr "分区类型名"
 
 #: misc-utils/lsblk.c:175
 msgid "partition LABEL"
@@ -10697,7 +10675,7 @@ msgstr " -s, --sysroot <目录>    以指定目录作为系统根目录\n"
 msgid "failed to access sysfs directory: %s"
 msgstr "无法访问 sysfs 目录：%s"
 
-#: misc-utils/lsblk.c:2153
+#: misc-utils/lsblk.c:2154
 msgid "failed to allocate device tree"
 msgstr "分配设备树失败"
 
@@ -10787,9 +10765,8 @@ msgid " -o, --output <list>    define which output columns to use\n"
 msgstr " -o, --output <list>    定义使用哪个输出列\n"
 
 #: misc-utils/lslocks.c:539 sys-utils/lsns.c:909 sys-utils/rfkill.c:584
-#, fuzzy
 msgid "     --output-all       output all columns\n"
-msgstr " -O, --output-all     输出所有列\n"
+msgstr "     --output-all       输出所有列\n"
 
 #: misc-utils/lslocks.c:540
 msgid " -p, --pid <pid>        display only locks held by this process\n"
@@ -11232,9 +11209,8 @@ msgid " -r, --random        generate random-based uuid\n"
 msgstr " -r, --random            测试基于随机数的生成方式\n"
 
 #: misc-utils/uuidgen.c:33
-#, fuzzy
 msgid " -t, --time          generate time-based uuid\n"
-msgstr " -t, --time              测试基于时间的生成方式\n"
+msgstr " -t, --time          生成基于时间的 uuid\n"
 
 #: misc-utils/uuidgen.c:34
 msgid " -n, --namespace ns  generate hash-based uuid in this namespace\n"
@@ -11300,13 +11276,12 @@ msgstr " -r, --raw              使用原始输出格式"
 
 #: misc-utils/uuidparse.c:172 misc-utils/uuidparse.c:191
 #: misc-utils/uuidparse.c:222
-#, fuzzy
 msgid "invalid"
-msgstr "无效 id"
+msgstr "无效"
 
 #: misc-utils/uuidparse.c:186
 msgid "other"
-msgstr ""
+msgstr "其它"
 
 #: misc-utils/uuidparse.c:197
 msgid "nil"
@@ -11322,7 +11297,7 @@ msgstr ""
 
 #: misc-utils/uuidparse.c:211
 msgid "random"
-msgstr ""
+msgstr "随机"
 
 #: misc-utils/uuidparse.c:214
 msgid "sha1-based"
@@ -11929,9 +11904,8 @@ msgid "Discard the content of sectors on a device.\n"
 msgstr "丢弃一个设备上的扇区内容。\n"
 
 #: sys-utils/blkdiscard.c:92
-#, fuzzy
 msgid " -f, --force         disable all checking\n"
-msgstr " -f, --force               禁用所有的一致性检查\n"
+msgstr " -f, --force         禁用所有检查\n"
 
 #: sys-utils/blkdiscard.c:93
 msgid " -o, --offset <num>  offset in bytes to discard from\n"
@@ -12086,19 +12060,19 @@ msgid "%s: number of sectors %<PRIu64> is not aligned to zone size %lu"
 msgstr "%s: 偏移量 %<PRIu64> 未与扇区大小 %i 对齐"
 
 #: sys-utils/blkzone.c:342
-#, fuzzy, c-format
+#, c-format
 msgid "%s: %s ioctl failed"
-msgstr "%s：FITRIM ioctl 失败"
+msgstr "%s：%s ioctl 失败"
 
 #: sys-utils/blkzone.c:345
 #, fuzzy, c-format
-msgid "%s: successfull %s of zones in range from %<PRIu64>, to %<PRIu64>"
+msgid "%s: successful %s of zones in range from %<PRIu64>, to %<PRIu64>"
 msgstr "分区表长度已从 %<PRIu32> 改为 %<PRIu64>。"
 
 #: sys-utils/blkzone.c:360
-#, fuzzy, c-format
+#, c-format
 msgid " %s <command> [options] <device>\n"
-msgstr " %s [选项] <设备>\n"
+msgstr " %s <命令> [选项] <设备>\n"
 
 #: sys-utils/blkzone.c:363
 msgid "Run zone command on the given block device.\n"
@@ -12355,14 +12329,14 @@ msgid "%s disable failed\n"
 msgstr "%s 禁用失败\n"
 
 #: sys-utils/chmem.c:156 sys-utils/chmem.c:242
-#, fuzzy, c-format
+#, c-format
 msgid "%s enabled\n"
-msgstr "CPU %u 已启用\n"
+msgstr "%s 已启用\n"
 
 #: sys-utils/chmem.c:158 sys-utils/chmem.c:244
-#, fuzzy, c-format
+#, c-format
 msgid "%s disabled\n"
-msgstr "CPU %u 已禁用\n"
+msgstr "%s 已禁用\n"
 
 #: sys-utils/chmem.c:170
 #, c-format
@@ -12395,19 +12369,19 @@ msgid "%s disable failed: Zone mismatch"
 msgstr "%s：喂看门狗失败"
 
 #: sys-utils/chmem.c:237
-#, fuzzy, c-format
+#, c-format
 msgid "%s enable failed"
-msgstr "CPU %u 启用失败"
+msgstr "%s 启用失败"
 
 #: sys-utils/chmem.c:239
-#, fuzzy, c-format
+#, c-format
 msgid "%s disable failed"
-msgstr "CPU %u 禁用失败"
+msgstr "%s 禁用失败"
 
 #: sys-utils/chmem.c:265 sys-utils/lsmem.c:490
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to read %s"
-msgstr "读 速度 失败"
+msgstr "无法读取 %s"
 
 #: sys-utils/chmem.c:273
 #, fuzzy
@@ -12459,14 +12433,14 @@ msgid "Start address and (end address + 1) must be aligned to memory block size 
 msgstr ""
 
 #: sys-utils/chmem.c:317
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid parameter: %s"
 msgstr "无效参数：%s"
 
 #: sys-utils/chmem.c:324
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid range: %s"
-msgstr "无效参数：%s"
+msgstr "无效范围：%s"
 
 #: sys-utils/chmem.c:333
 #, fuzzy, c-format
@@ -13012,9 +12986,8 @@ msgid "CD-ROM drive is not ready"
 msgstr "CD-ROM 驱动器未就绪"
 
 #: sys-utils/eject.c:441
-#, fuzzy
 msgid "CD-ROM status command failed"
-msgstr "CD-ROM 弹出命令失败"
+msgstr "CD-ROM 状态命令失败"
 
 #: sys-utils/eject.c:481
 msgid "CD-ROM select speed command failed"
@@ -13090,9 +13063,8 @@ msgid "using default device `%s'"
 msgstr "使用默认设备“%s”"
 
 #: sys-utils/eject.c:890
-#, fuzzy
 msgid "unable to find device"
-msgstr "%s：找不到设备"
+msgstr "找不到设备"
 
 #: sys-utils/eject.c:892
 #, c-format
@@ -13262,9 +13234,8 @@ msgid " -z, --zero-range     zero and ensure allocation of a range\n"
 msgstr " -z, --zero-range     清零并保证分配某个范围\n"
 
 #: sys-utils/fallocate.c:99
-#, fuzzy
 msgid " -x, --posix          use posix_fallocate(3) instead of fallocate(2)\n"
-msgstr " -y, --physical          打印物理 ID 而非逻辑 ID\n"
+msgstr " -x, --posix          使用 posix_fallocate(3) 而非 fallocate(2)\n"
 
 #: sys-utils/fallocate.c:139
 msgid "fallocate failed: keep size mode is unsupported"
@@ -13450,9 +13421,9 @@ msgid "%s: not a directory"
 msgstr "%s：不是一个目录"
 
 #: sys-utils/fstrim.c:94
-#, fuzzy, c-format
+#, c-format
 msgid "cannot get realpath: %s"
-msgstr "不能读 %s"
+msgstr "无法获取真实路径：%s"
 
 #: sys-utils/fstrim.c:110
 #, fuzzy, c-format
@@ -13738,9 +13709,9 @@ msgid ""
 msgstr ""
 
 #: sys-utils/hwclock.c:899
-#, fuzzy, c-format
+#, c-format
 msgid "cannot update %s"
-msgstr "打不开 %s"
+msgstr "无法更新 %s"
 
 #: sys-utils/hwclock.c:935
 #, c-format
@@ -13894,9 +13865,9 @@ msgid "     --update-drift   update the RTC drift factor"
 msgstr ""
 
 #: sys-utils/hwclock.c:1179
-#, fuzzy, c-format
+#, c-format
 msgid "     --noadjfile      do not use %1$s\n"
-msgstr "      --noheadings     不打印标题\n"
+msgstr "     --noadjfile      不使用 %1$s\n"
 
 #: sys-utils/hwclock.c:1181
 #, fuzzy, c-format
@@ -14825,9 +14796,8 @@ msgid "%s (kbytes) = "
 msgstr "%s (千字节) = "
 
 #: sys-utils/irq-common.c:53 sys-utils/irq-common.c:114
-#, fuzzy
 msgid "interrupts"
-msgstr "中断的 %s"
+msgstr "中断"
 
 #: sys-utils/irq-common.c:54
 #, fuzzy
@@ -14840,9 +14810,8 @@ msgid "delta count"
 msgstr "读计数"
 
 #: sys-utils/irq-common.c:56
-#, fuzzy
 msgid "name"
-msgstr "新名称"
+msgstr "名称"
 
 #: sys-utils/irq-common.c:106 sys-utils/lsmem.c:689 sys-utils/lsns.c:782
 msgid "failed to initialize output table"
@@ -14854,7 +14823,7 @@ msgstr "向输出添加行出错"
 
 #: sys-utils/irq-common.c:348
 #, fuzzy
-msgid "unssupported column name to sort output"
+msgid "unsupported column name to sort output"
 msgstr "不支持的颜色模式"
 
 #: sys-utils/irqtop.c:114
@@ -14865,34 +14834,28 @@ msgid ""
 msgstr ""
 
 #: sys-utils/irqtop.c:142
-#, fuzzy
 msgid "cannot not create timerfd"
-msgstr "无法设置定时器"
+msgstr "无法创建 timerfd"
 
 #: sys-utils/irqtop.c:144
-#, fuzzy
 msgid "cannot set timerfd"
-msgstr "无法设置定时器"
+msgstr "无法设置 timerfd"
 
 #: sys-utils/irqtop.c:149 sys-utils/irqtop.c:167 sys-utils/irqtop.c:172
-#, fuzzy
 msgid "epoll_ctl failed"
-msgstr "轮询失败"
+msgstr "epoll_ctl 失败"
 
 #: sys-utils/irqtop.c:152
-#, fuzzy
 msgid "sigfillset failed"
-msgstr "select 失败"
+msgstr "sigfillset 失败"
 
 #: sys-utils/irqtop.c:154
-#, fuzzy
 msgid "sigprocmask failed"
-msgstr "setgroups 失败"
+msgstr "sigprocmask 失败"
 
 #: sys-utils/irqtop.c:162
-#, fuzzy
 msgid "cannot not create signalfd"
-msgstr "无法阻塞信号"
+msgstr "无法创建 signalfd"
 
 #: sys-utils/irqtop.c:220
 msgid "Interactive utility to display kernel interrupt information."
@@ -15277,9 +15240,8 @@ msgid "%s: failed to use backing file"
 msgstr "%s：使用后备文件失败"
 
 #: sys-utils/losetup.c:661
-#, fuzzy
 msgid "failed to parse logical block size"
-msgstr "解析大小失败"
+msgstr "解析逻辑块大小失败"
 
 #: sys-utils/losetup.c:667 sys-utils/losetup.c:677 sys-utils/losetup.c:801
 #: sys-utils/losetup.c:815 sys-utils/losetup.c:855
@@ -15311,9 +15273,9 @@ msgid "%s: set direct io failed"
 msgstr "%s︰ 设置直接 io 失败"
 
 #: sys-utils/losetup.c:909
-#, fuzzy, c-format
+#, c-format
 msgid "%s: set logical block size failed"
-msgstr "%s：获取大小失败"
+msgstr "%s：设置逻辑块大小失败"
 
 #: sys-utils/lscpu.c:82
 msgid "none"
@@ -15398,12 +15360,11 @@ msgstr "设置 文件系统 readahead"
 
 #: sys-utils/lscpu.c:215
 msgid "cache level"
-msgstr ""
+msgstr "缓存等级"
 
 #: sys-utils/lscpu.c:216
-#, fuzzy
 msgid "cache name"
-msgstr "设备名"
+msgstr "缓存名称"
 
 #: sys-utils/lscpu.c:217
 #, fuzzy
@@ -15423,9 +15384,8 @@ msgid "allocation policy"
 msgstr ""
 
 #: sys-utils/lscpu.c:221
-#, fuzzy
 msgid "write policy"
-msgstr "写出错"
+msgstr "写策略"
 
 #: sys-utils/lscpu.c:222
 #, fuzzy
@@ -15737,14 +15697,12 @@ msgid "%s: options --all, --online and --offline may only be used with options -
 msgstr "%s：--all、--online 和 --offline 选项只能与 --extended 或 --parse 选项一起使用。\n"
 
 #: sys-utils/lscpu.c:2441
-#, fuzzy
 msgid "failed to initialize CPUs sysfs handler"
-msgstr "%s：初始化 sysfs 处理函数失败"
+msgstr "%s：初始化 CPU sysfs 处理函数失败"
 
 #: sys-utils/lscpu.c:2448
-#, fuzzy
 msgid "failed to initialize procfs handler"
-msgstr "%s：初始化 sysfs 处理函数失败"
+msgstr "%s：初始化 procfs 处理函数失败"
 
 #: sys-utils/lsipc.c:149
 msgid "Resource key"
@@ -16192,9 +16150,9 @@ msgid "Total offline memory:"
 msgstr ""
 
 #: sys-utils/lsmem.c:343
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to open %s"
-msgstr "解析 %s 失败"
+msgstr "打开 %s 失败"
 
 #: sys-utils/lsmem.c:453
 #, fuzzy
@@ -16230,9 +16188,8 @@ msgid "     --summary[=when] print summary information (never,always or only)\n"
 msgstr ""
 
 #: sys-utils/lsmem.c:628
-#, fuzzy
 msgid "unsupported --summary argument"
-msgstr "不支持的 --setgroups 参数“%s”"
+msgstr "不支持的 --summary 参数"
 
 #: sys-utils/lsmem.c:648
 #, fuzzy
@@ -16245,7 +16202,6 @@ msgid "invalid argument to --sysroot"
 msgstr "-r 的参数无效"
 
 #: sys-utils/lsmem.c:704
-#, fuzzy
 msgid "Failed to initialize output column"
 msgstr "初始化输出列失败"
 
@@ -16307,9 +16263,8 @@ msgid " -p, --task <pid>       print process namespaces\n"
 msgstr " -p, --task <pid>       打印进程名字空间\n"
 
 #: sys-utils/lsns.c:913
-#, fuzzy
 msgid " -W, --nowrap           don't use multi-line representation\n"
-msgstr " -n, --no-mtab           不写 /etc/mtab\n"
+msgstr " -W, --nowrap           不要使用多行表现\n"
 
 #: sys-utils/lsns.c:914
 #, fuzzy
@@ -17242,9 +17197,9 @@ msgid "unblocked"
 msgstr "已锁定"
 
 #: sys-utils/rfkill.c:417 sys-utils/rfkill.c:489 sys-utils/rfkill.c:533
-#, fuzzy, c-format
+#, c-format
 msgid "invalid identifier: %s"
-msgstr "磁盘标识符：%s"
+msgstr "无效的标识符：%s"
 
 #: sys-utils/rfkill.c:575
 #, fuzzy, c-format
@@ -17711,9 +17666,8 @@ msgid " This tool can be dangerous.  Read the manpage, and be careful.\n"
 msgstr "运行此工具有风险。请阅读 man 手册，谨慎操作。\n"
 
 #: sys-utils/setpriv.c:170
-#, fuzzy
 msgid "invalid capability type"
-msgstr "错误的权能字符串"
+msgstr "无效的权能类型"
 
 #: sys-utils/setpriv.c:222 sys-utils/setpriv.c:566
 msgid "getting process secure bits failed"
@@ -17746,9 +17700,8 @@ msgid "[none]"
 msgstr "[无]"
 
 #: sys-utils/setpriv.c:320
-#, fuzzy
 msgid "get pdeathsig failed"
-msgstr "getresuid 失败"
+msgstr "获取 pdeathsig 失败"
 
 #: sys-utils/setpriv.c:340
 #, c-format
@@ -17833,9 +17786,8 @@ msgid "setresgid failed"
 msgstr "setresgid 失败"
 
 #: sys-utils/setpriv.c:514
-#, fuzzy
 msgid "unsupported capability type"
-msgstr "不支持的时间类型"
+msgstr "不支持的权能类型"
 
 #: sys-utils/setpriv.c:531
 msgid "bad capability string"
@@ -18595,9 +18547,8 @@ msgid " -q, --quiet             suppress 'not mounted' error messages\n"
 msgstr " -q, --quiet             不要输出“未挂载”错误信息\n"
 
 #: sys-utils/umount.c:106
-#, fuzzy
 msgid " -N, --namespace <ns>    perform umount in another namespace\n"
-msgstr " -S, --setuid <uid>     设置进入空间中的 uid\n"
+msgstr " -N, --namespace <ns>    在另一个命名空间进行卸载\n"
 
 #: sys-utils/umount.c:149
 #, c-format
@@ -18661,14 +18612,12 @@ msgid "mount %s on %s failed"
 msgstr "将 %s 挂载到 %s 失败"
 
 #: sys-utils/unshare.c:221
-#, fuzzy
 msgid "failed to open /proc/self/timens_offsets"
-msgstr "解析偏移失败"
+msgstr "打开 /proc/self/timens_offsets 失败"
 
 #: sys-utils/unshare.c:224
-#, fuzzy
 msgid "failed to write to /proc/self/timens_offsets"
-msgstr "解析偏移失败"
+msgstr "写入 /proc/self/timens_offsets 失败"
 
 #: sys-utils/unshare.c:236
 msgid "pipe failed"
@@ -18711,9 +18660,8 @@ msgid " -C, --cgroup[=<file>]     unshare cgroup namespace\n"
 msgstr " -C, --cgroup[=<文件>]     取消共享 cgroup 名字空间\n"
 
 #: sys-utils/unshare.c:319
-#, fuzzy
 msgid " -T, --time[=<file>]       unshare time namespace\n"
-msgstr " -p, --pid[=<文件>]        取消共享 pid 名字空间\n"
+msgstr " -T, --time[=<文件>]       取消共享时间名字空间\n"
 
 #: sys-utils/unshare.c:321
 msgid " -f, --fork                fork before launching <program>\n"
@@ -18844,18 +18792,16 @@ msgid "mount %s failed"
 msgstr "挂载 %s 失败"
 
 #: sys-utils/unshare.c:682
-#, fuzzy
 msgid "capget failed"
-msgstr "crypt 失败"
+msgstr "capget 失败"
 
 #: sys-utils/unshare.c:690
-#, fuzzy
 msgid "capset failed"
-msgstr "reset 失败"
+msgstr "capset 失败"
 
 #: sys-utils/unshare.c:702
 msgid "prctl(PR_CAP_AMBIENT) failed"
-msgstr ""
+msgstr "prctl(PR_CAP_AMBIENT) 失败"
 
 #: sys-utils/wdctl.c:72
 msgid "Card previously reset the CPU"
@@ -18964,9 +18910,9 @@ msgid "The default device is %s.\n"
 msgstr "默认设备为 %s。\n"
 
 #: sys-utils/wdctl.c:231
-#, fuzzy, c-format
+#, c-format
 msgid "No default device is available.\n"
-msgstr "默认设备为 %s。\n"
+msgstr "没有可用的默认设备。\n"
 
 #: sys-utils/wdctl.c:329
 #, c-format
@@ -19000,9 +18946,9 @@ msgid "%s: failed to get information about watchdog"
 msgstr "%s：获取看门狗信息失败"
 
 #: sys-utils/wdctl.c:503
-#, fuzzy, c-format
+#, c-format
 msgid "cannot read information about %s"
-msgstr "无法向 %s 写入 intro 命令"
+msgstr "无法读取有关 %s 的信息"
 
 #: sys-utils/wdctl.c:513 sys-utils/wdctl.c:516 sys-utils/wdctl.c:519
 #, c-format
@@ -19035,9 +18981,8 @@ msgid "version"
 msgstr "版本："
 
 #: sys-utils/wdctl.c:690
-#, fuzzy
 msgid "No default device is available."
-msgstr "默认设备为 %s。\n"
+msgstr "无可用默认设备。"
 
 #: sys-utils/zramctl.c:75
 msgid "zram device name"
@@ -19295,9 +19240,9 @@ msgid "failed to create reload file: %s: %m"
 msgstr "未能创建 reload 文件︰%s：%m"
 
 #: term-utils/agetty.c:2011
-#, fuzzy, c-format
+#, c-format
 msgid "failed to get terminal attributes: %m"
-msgstr "%s：获取终端属性失败：%m"
+msgstr "获取终端属性失败：%m"
 
 #: term-utils/agetty.c:2033
 msgid "[press ENTER to login]"
@@ -19388,9 +19333,8 @@ msgid " -f, --issue-file <list>    display issue files or directories\n"
 msgstr " -f, --issue-file <文件>    指定要显示的预登录消息(issue)文件\n"
 
 #: term-utils/agetty.c:2448
-#, fuzzy
 msgid "     --show-issue           display issue file and exit\n"
-msgstr " -i, --noissue              不显示预登录消息(issue)文件\n"
+msgstr "     --show-issue           显示预登录（issue）文件并退出\n"
 
 #: term-utils/agetty.c:2449
 msgid " -h, --flow-control         enable hardware flow control\n"
@@ -19561,11 +19505,11 @@ msgstr "更改 %s 模式失败"
 
 #: term-utils/mesg.c:166
 msgid "write access to your terminal is allowed"
-msgstr "允许了写您的终端"
+msgstr "对您的终端的写访问已被允许"
 
 #: term-utils/mesg.c:173
 msgid "write access to your terminal is denied"
-msgstr "拒绝了写您的终端"
+msgstr "对您的终端的写访问已被拒绝"
 
 #: term-utils/script.c:190
 #, c-format
@@ -19574,75 +19518,63 @@ msgstr " %s [选项] [文件]\n"
 
 #: term-utils/script.c:193
 msgid "Make a typescript of a terminal session.\n"
-msgstr "创建终端会话的 typescript。\n"
+msgstr "创建终端会话的打字稿（typescript）。\n"
 
 #: term-utils/script.c:196
-#, fuzzy
 msgid " -I, --log-in <file>           log stdin to file\n"
-msgstr " -f, --file <文件>       记录指定文件的内容\n"
+msgstr " -I, --log-in <文件>           将标准输入记录到文件\n"
 
 #: term-utils/script.c:197
-#, fuzzy
 msgid " -O, --log-out <file>          log stdout to file (default)\n"
-msgstr " -a, --all         全部(默认)\n"
+msgstr " -O, --log-out <文件>          将标准输出记录到文件（默认）\n"
 
 #: term-utils/script.c:198
-#, fuzzy
 msgid " -B, --log-io <file>           log stdin and stdout to file\n"
-msgstr " -f, --file <文件>       记录指定文件的内容\n"
+msgstr " -B, --log-io <文件>           将标准输入和标准输出记录到文件\n"
 
 #: term-utils/script.c:201
-#, fuzzy
 msgid " -T, --log-timing <file>       log timing information to file\n"
-msgstr " -f, --file <文件>       记录指定文件的内容\n"
+msgstr " -T, --log-timing <文件>       将时序信息记录到文件\n"
 
 #: term-utils/script.c:202
 msgid " -t[<file>], --timing[=<file>] deprecated alias to -T (default file is stderr)\n"
-msgstr ""
+msgstr " -t[<文件>], --timing[=<文件>] 到 -T 的已不建议使用的别名（默认文件为标准错误）\n"
 
 #: term-utils/script.c:203
 msgid " -m, --logging-format <name>   force to 'classic' or 'advanced' format\n"
-msgstr ""
+msgstr " -m, --logging-format <名称>   强制使用“classic”或“advanced”格式\n"
 
 #: term-utils/script.c:206
-#, fuzzy
 msgid " -a, --append                  append to the log file\n"
-msgstr " -a, --append              将分区附加到已有分区表\n"
+msgstr " -a, --append                  附加到日志文件\n"
 
 #: term-utils/script.c:207
-#, fuzzy
 msgid " -c, --command <command>       run command rather than interactive shell\n"
-msgstr " -c, --command <命令>      通过 shell 运行单个命令字符串\n"
+msgstr " -c, --command <命令>          运行指定命令而非启动交互式 shell\n"
 
 #: term-utils/script.c:208
-#, fuzzy
 msgid " -e, --return                  return exit code of the child process\n"
-msgstr " -r, --reset                  重置端口\n"
+msgstr " -e, --return                  返回子进程的退出值\n"
 
 #: term-utils/script.c:209
-#, fuzzy
 msgid " -f, --flush                   run flush after each write\n"
-msgstr " -t, --table                      创建表格\n"
+msgstr " -f, --flush                   每次写入后清空缓冲区\n"
 
 #: term-utils/script.c:210
-#, fuzzy
 msgid "     --force                   use output file even when it is a link\n"
-msgstr "     --raw                 使用原生状态输出格式\n"
+msgstr "     --force                   强制使用指定输出文件，无论目标文件是链接与否\n"
 
 #: term-utils/script.c:211
-#, fuzzy
 msgid " -E, --echo <when>             echo input (auto, always or never)\n"
-msgstr " -L, --color[=<时机>]          彩色输出(auto, always 或 never)\n"
+msgstr " -E, --echo <时机>             回显输入（, always 或 never）\n"
 
 #: term-utils/script.c:212
-#, fuzzy
 msgid " -o, --output-limit <size>     terminate if output files exceed size\n"
-msgstr " -o, --output <list>    定义使用哪个输出列\n"
+msgstr " -o, --output-limit <大小>     在输出文件超出指定大小时终止\n"
 
 #: term-utils/script.c:213
-#, fuzzy
 msgid " -q, --quiet                   be quiet\n"
-msgstr " -q, --quiet             开启安静模式\n"
+msgstr " -q, --quiet                   开启安静模式\n"
 
 #: term-utils/script.c:296
 #, c-format
@@ -19673,7 +19605,7 @@ msgid "<not executed on terminal>"
 msgstr "<未在终端上执行>"
 
 #: term-utils/script.c:680
-#, fuzzy, c-format
+#, c-format
 msgid "Script terminated, max output files size %<PRIu64> exceeded.\n"
 msgstr "脚本已终止，已超过最大输出文件大小 %<PRIu64>。\n"
 
@@ -19693,9 +19625,9 @@ msgstr ""
 "程序没有启动。"
 
 #: term-utils/script.c:827
-#, fuzzy, c-format
+#, c-format
 msgid "unssuported echo mode: '%s'"
-msgstr "不支持的颜色模式"
+msgstr "不支持的回显模式：“%s”"
 
 #: term-utils/script.c:852
 msgid "failed to parse output limit size"
@@ -19704,65 +19636,63 @@ msgstr "解析输出大小限制失败"
 #: term-utils/script.c:863
 #, fuzzy, c-format
 msgid "unsupported logging format: '%s'"
-msgstr "不支持的参数格式：%s"
+msgstr "不支持的日志格式：“%s”"
 
 #: term-utils/script.c:907
-#, fuzzy
 msgid "log multiple streams is mutually exclusive with 'classic' format"
-msgstr "--task 与 <名字空间> 互斥"
+msgstr "无法在使用“classic”（经典）格式时同时记录多个流"
 
 #: term-utils/script.c:934
-#, fuzzy, c-format
+#, c-format
 msgid "Script started"
-msgstr "脚本启动于 %s ["
+msgstr "脚本已启动"
 
 #: term-utils/script.c:936
-#, fuzzy, c-format
+#, c-format
 msgid ", output log file is '%s'"
-msgstr "脚本完成，文件为  %s\n"
+msgstr "，输出日志文件为“%s”"
 
 #: term-utils/script.c:938
-#, fuzzy, c-format
+#, c-format
 msgid ", input log file is '%s'"
-msgstr "脚本完成，文件为  %s\n"
+msgstr "，输入日志文件为“%s”"
 
 #: term-utils/script.c:940
-#, fuzzy, c-format
+#, c-format
 msgid ", timing file is '%s'"
-msgstr "读时序文件 %s 失败"
+msgstr "，时序文件为“%s”"
 
 #: term-utils/script.c:941
-#, fuzzy, c-format
+#, c-format
 msgid ".\n"
-msgstr "\n"
+msgstr "。\n"
 
 #: term-utils/script.c:1047
-#, fuzzy, c-format
+#, c-format
 msgid "Script done.\n"
-msgstr "脚本完成，文件为  %s\n"
+msgstr "脚本已完成。\n"
 
 #: term-utils/scriptlive.c:60
-#, fuzzy, c-format
+#, c-format
 msgid " %s [-t] timingfile [-I|-B] typescript\n"
-msgstr " %s [-t] timingfile [typescript] [divisor]\n"
+msgstr " %s [-t] timingfile [-I|-B] typescript\n"
 
 #: term-utils/scriptlive.c:64
 msgid "Execute terminal typescript.\n"
-msgstr ""
+msgstr "执行终端打字稿（typescript）。\n"
 
 #: term-utils/scriptlive.c:67 term-utils/scriptreplay.c:56
-#, fuzzy
 msgid " -t, --timing <file>     script timing log file\n"
-msgstr " -t, --time <time_t>      指定唤醒时刻\n"
+msgstr " -t, --timing <文件>     script timing log file\n"
 
 #: term-utils/scriptlive.c:68 term-utils/scriptreplay.c:57
 msgid " -T, --log-timing <file> alias to -t\n"
-msgstr ""
+msgstr " -T, --log-timing <文件> 等效于 -t\n"
 
 #: term-utils/scriptlive.c:69 term-utils/scriptreplay.c:58
 #, fuzzy
 msgid " -I, --log-in <file>     script stdin log file\n"
-msgstr " -f, --issue-file <文件>    指定要显示的预登录消息(issue)文件\n"
+msgstr " -I, --log-in <文件>     脚本标准输入日志文件\n"
 
 #: term-utils/scriptlive.c:70 term-utils/scriptreplay.c:60
 msgid " -B, --log-io <file>     script stdin and stdout log file\n"
@@ -19788,9 +19718,8 @@ msgid "failed to parse maximal delay argument"
 msgstr "解析参数失败"
 
 #: term-utils/scriptlive.c:249 term-utils/scriptreplay.c:253
-#, fuzzy
 msgid "timing file not specified"
-msgstr "未指定文件"
+msgstr "未指定时序文件"
 
 #: term-utils/scriptlive.c:251
 #, fuzzy
@@ -19824,13 +19753,12 @@ msgid "Play back terminal typescripts, using timing information.\n"
 msgstr "使用定时信息回话终端 typescript。\n"
 
 #: term-utils/scriptreplay.c:59
-#, fuzzy
 msgid " -O, --log-out <file>    script stdout log file (default)\n"
-msgstr " -f, --from <N>    从磁道 N 开始(默认 0)\n"
+msgstr ""
 
 #: term-utils/scriptreplay.c:62
 msgid " -s, --typescript <file> deprecated alias to -O\n"
-msgstr ""
+msgstr " -s, --typescript <文件> 已不建议使用的 -O 的别名\n"
 
 #: term-utils/scriptreplay.c:65
 #, fuzzy
@@ -19838,38 +19766,36 @@ msgid "     --summary           display overview about recorded session and exit
 msgstr " -V          显示版本信息并退出\n"
 
 #: term-utils/scriptreplay.c:68
-#, fuzzy
 msgid " -x, --stream <name>     stream type (out, in, signal or info)\n"
-msgstr " -t, --type <name>      名字空间类型(mnt, net, ipc, user, pid, uts, cgroup)\n"
+msgstr " -x, --stream <name>     流类型（out, in, signal 或 info）\n"
 
 #: term-utils/scriptreplay.c:69
 msgid " -c, --cr-mode <type>    CR char mode (auto, never, always)\n"
-msgstr ""
+msgstr " -c, --cr-mode <类型>    CR 字符模式（auto, never, always）\n"
 
 #: term-utils/scriptreplay.c:191
-#, fuzzy, c-format
+#, c-format
 msgid "unsupported mode name: '%s'"
-msgstr "不支持的标签：“%s”"
+msgstr "不支持的模式名称：“%s”"
 
 #: term-utils/scriptreplay.c:224
-#, fuzzy, c-format
+#, c-format
 msgid "unsupported stream name: '%s'"
-msgstr "不受支持的源标记︰ %s"
+msgstr "不支持的流名称：“%s”"
 
 #: term-utils/scriptreplay.c:255
-#, fuzzy
 msgid "data log file not specified"
-msgstr "未指定文件"
+msgstr "未指定数据日志文件"
 
 #: term-utils/scriptreplay.c:304
-#, fuzzy, c-format
+#, c-format
 msgid "%s: log file error"
-msgstr "klogctl 出错"
+msgstr "%s：日志文件错误"
 
 #: term-utils/scriptreplay.c:306
 #, c-format
 msgid "%s: line %d: timing file error"
-msgstr ""
+msgstr "%s：行 %d：时序文件错误"
 
 #: term-utils/setterm.c:237
 #, c-format
@@ -19885,9 +19811,8 @@ msgid "Set the attributes of a terminal.\n"
 msgstr "设置终端属性。\n"
 
 #: term-utils/setterm.c:387
-#, fuzzy
 msgid " --term <terminal_name>        override TERM environment variable\n"
-msgstr " --term          <终端名>          替换 TERM 环境变量\n"
+msgstr " --term <终端_名称>            替换 TERM 环境变量\n"
 
 #: term-utils/setterm.c:388
 #, fuzzy
@@ -19905,9 +19830,8 @@ msgid " --initialize                  display init string, and use default setti
 msgstr " --initialize                      显示初始化字符串，并使用默认设置\n"
 
 #: term-utils/setterm.c:391
-#, fuzzy
 msgid " --default                     use default terminal settings\n"
-msgstr " --default                         使用默认终端设置\n"
+msgstr " --default                     使用默认终端设置\n"
 
 #: term-utils/setterm.c:392
 #, fuzzy
@@ -19940,69 +19864,56 @@ msgid " --inversescreen on|off        swap colors for the whole screen\n"
 msgstr " --inversescreen [on|off]          交换整个屏幕的颜色\n"
 
 #: term-utils/setterm.c:402
-#, fuzzy
 msgid " --msg on|off                  send kernel messages to console\n"
-msgstr " --msg           [on|off]          将内核消息发送到终端\n"
+msgstr " --msg on|off                  将内核消息发送到控制台\n"
 
 #: term-utils/setterm.c:403
-#, fuzzy
 msgid " --msglevel <0-8>              kernel console log level\n"
-msgstr " --msglevel      0-8               内核终端日志记录级别\n"
+msgstr " --msglevel <0-8>              内核控制台日志记录级别\n"
 
 #: term-utils/setterm.c:406
-#, fuzzy
 msgid " --foreground default|<color>  set foreground color\n"
-msgstr " --foreground    default|<颜色>    设置前景色\n"
+msgstr " --foreground default|<颜色>   设置前景色\n"
 
 #: term-utils/setterm.c:407
-#, fuzzy
 msgid " --background default|<color>  set background color\n"
-msgstr " --background    default|<颜色>    设置背景色\n"
+msgstr " --background default|<颜色>   设置背景色\n"
 
 #: term-utils/setterm.c:408
-#, fuzzy
 msgid " --ulcolor [bright] <color>    set underlined text color\n"
-msgstr " --ulcolor       [bright] <颜色>   设置下划线颜色\n"
+msgstr " --ulcolor [bright] <颜色>     设置下划线文本颜色\n"
 
 #: term-utils/setterm.c:409
-#, fuzzy
 msgid " --hbcolor [bright] <color>    set half-bright text color\n"
-msgstr " --hbcolor       [bright] <颜色>   设置粗体字颜色\n"
+msgstr " --hbcolor [bright] <颜色>     设置半亮度文本颜色\n"
 
 #: term-utils/setterm.c:410
-#, fuzzy
 msgid "        <color>: black blue cyan green grey magenta red white yellow\n"
-msgstr "                 <颜色>：black blue cyan green grey magenta red white yellow\n"
+msgstr "         <颜色>：black blue cyan green grey magenta red white yellow\n"
 
 #: term-utils/setterm.c:413
-#, fuzzy
 msgid " --bold on|off                 bold\n"
-msgstr " --bold          [on|off]          粗体\n"
+msgstr " --bold on|off                 粗体\n"
 
 #: term-utils/setterm.c:414
-#, fuzzy
 msgid " --half-bright on|off          dim\n"
-msgstr " -half-bright    [on|off]          变暗\n"
+msgstr " --half-bright on|off          变暗\n"
 
 #: term-utils/setterm.c:415
-#, fuzzy
 msgid " --blink on|off                blink\n"
-msgstr " --blink         [on|off]          闪烁\n"
+msgstr " --blink on|off                闪烁\n"
 
 #: term-utils/setterm.c:416
-#, fuzzy
 msgid " --underline on|off            underline\n"
-msgstr " --underline     [on|off]          下划线\n"
+msgstr " --underline on|off            下划线\n"
 
 #: term-utils/setterm.c:417
-#, fuzzy
 msgid " --reverse  on|off             swap foreground and background colors\n"
-msgstr " --reverse       [on|off]          交换前景色和背景色\n"
+msgstr " --reverse  on|off             交换前景色和背景色\n"
 
 #: term-utils/setterm.c:420
-#, fuzzy
 msgid " --clear[=<all|rest>]          clear screen and set cursor position\n"
-msgstr " --clear         [all|rest]        清屏并设置光标位置\n"
+msgstr " --clear[=<all|rest>]          清屏并设置光标位置\n"
 
 #: term-utils/setterm.c:421
 #, fuzzy
@@ -20035,34 +19946,28 @@ msgid " --append <number>             append vcsa<number> console dump to file\n
 msgstr " --append        [<数字>]          将 vcsa<数字> 终端转储追加到文件\n"
 
 #: term-utils/setterm.c:429
-#, fuzzy
 msgid " --file <filename>             name of the dump file\n"
-msgstr " -f, --file      <文件名>          转储文件的名字\n"
+msgstr " --file <文件名>               转储文件的名字\n"
 
 #: term-utils/setterm.c:432
-#, fuzzy
 msgid " --powersave on|vsync|hsync|powerdown|off\n"
-msgstr " -powersave      [on|vsync|hsync|powerdown|off]\n"
+msgstr " --powersave on|vsync|hsync|powerdown|off\n"
 
 #: term-utils/setterm.c:433
-#, fuzzy
 msgid "                               set vesa powersaving features\n"
-msgstr "                                   设置 vesa 节能功能\n"
+msgstr "                               设置 vesa 节能功能\n"
 
 #: term-utils/setterm.c:434
-#, fuzzy
 msgid " --powerdown[=<0-60>]          set vesa powerdown interval in minutes\n"
-msgstr " --powerdown     [0-60]            设置 vesa 关闭电源间隔(分钟)\n"
+msgstr " --powerdown[=<0-60>]          设置 vesa 关闭电源间隔（分钟）\n"
 
 #: term-utils/setterm.c:437
-#, fuzzy
 msgid " --blength[=<0-2000>]          duration of the bell in milliseconds\n"
-msgstr " --blength       [0-2000]          响铃持续时间(毫秒)\n"
+msgstr " --blength[=<0-2000>]          响铃持续时间（毫秒）\n"
 
 #: term-utils/setterm.c:438
-#, fuzzy
 msgid " --bfreq[=<number>]            bell frequency in Hertz\n"
-msgstr " --bfreq         <数字>            响铃频率，单位为 Hz\n"
+msgstr " --bfreq[=<数字>]            响铃频率，单位为 Hz\n"
 
 #: term-utils/setterm.c:451
 msgid "duplicate use of an option"
@@ -20286,7 +20191,7 @@ msgid "Filter out reverse line feeds.\n"
 msgstr "过滤反换行。\n"
 
 #: text-utils/col.c:138
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "\n"
 "Options:\n"
@@ -20305,9 +20210,6 @@ msgstr ""
 " -h, --tabs             将空格转换为制表符\n"
 " -x, --spaces           将制表符转换为空格\n"
 " -l, --lines NUM        缓冲至少 NUM 行\n"
-" -V, --version          输出版本信息并退出\n"
-" -H, --help             显示此帮助并退出\n"
-"\n"
 
 #: text-utils/col.c:151 text-utils/colrm.c:69
 #, c-format
@@ -20323,9 +20225,9 @@ msgid "bad -l argument"
 msgstr "-l 参数有误"
 
 #: text-utils/col.c:246
-#, fuzzy, c-format
+#, c-format
 msgid "failed on line %d"
-msgstr "unlink %s 失败"
+msgstr "在 %d 行失败"
 
 #: text-utils/col.c:344
 #, c-format
@@ -20381,44 +20283,37 @@ msgid "second argument"
 msgstr "第二个参数"
 
 #: text-utils/column.c:235
-#, fuzzy
 msgid "failed to parse column"
-msgstr "解析 终点 失败"
+msgstr "解析列失败"
 
 #: text-utils/column.c:245
-#, fuzzy, c-format
+#, c-format
 msgid "undefined column name '%s'"
-msgstr "未定义的挂载点"
+msgstr "未定义的列名称“%s”"
 
 #: text-utils/column.c:321
-#, fuzzy
 msgid "failed to parse --table-order list"
-msgstr "解析 --timeout 失败"
+msgstr "解析 --table-order 列表失败"
 
 #: text-utils/column.c:397
-#, fuzzy
 msgid "failed to parse --table-right list"
-msgstr "解析 起点 失败"
+msgstr "解析 --table-right 列表失败"
 
 #: text-utils/column.c:401
-#, fuzzy
 msgid "failed to parse --table-trunc list"
-msgstr "解析 --timeout 失败"
+msgstr "解析 --table-trunc 列表失败"
 
 #: text-utils/column.c:405
-#, fuzzy
 msgid "failed to parse --table-noextreme list"
-msgstr "解析 --timeout 失败"
+msgstr "解析 --table-noextreme 列表失败"
 
 #: text-utils/column.c:409
-#, fuzzy
 msgid "failed to parse --table-wrap list"
-msgstr "解析 起点 失败"
+msgstr "解析 --table-wrap 列表失败"
 
 #: text-utils/column.c:413
-#, fuzzy
 msgid "failed to parse --table-hide list"
-msgstr "解析 --timeout 失败"
+msgstr "解析 --table-hide 列表失败"
 
 #: text-utils/column.c:444
 #, c-format
@@ -20484,9 +20379,8 @@ msgid " -W, --table-wrap <columns>       wrap text in the columns when necessary
 msgstr ""
 
 #: text-utils/column.c:643
-#, fuzzy
 msgid " -L, --table-empty-lines          don't ignore empty lines\n"
-msgstr " -n, --noheadings          不打印标题\n"
+msgstr " -L, --table-empty-lines          不要忽略空行\n"
 
 #: text-utils/column.c:644
 #, fuzzy
@@ -20544,7 +20438,7 @@ msgstr ""
 
 #: text-utils/column.c:812
 msgid "option --table required for all --table-*"
-msgstr ""
+msgstr "所有 --table-* 均需要 --table 选项"
 
 #: text-utils/column.c:815
 msgid "option --table-columns required for --json"
@@ -21120,46 +21014,48 @@ msgstr "输入中有未知转义序列：%o，%o"
 msgid "Input line too long."
 msgstr "输入行过长。"
 
-#, c-format
 #~ msgid "%s: failed to read partition start from sysfs"
 #~ msgstr "%s：读取从 sysfs 起始的分区失败"
 
 #~ msgid "All logical partitions are in use. Adding a primary partition."
 #~ msgstr "所有逻辑分区都在使用中。将添加一个主分区。"
 
-#, fuzzy, c-format
+#, fuzzy
+#~| msgid "%s: BLKSSZGET ioctl failed"
 #~ msgid "%s: BLKRESETZONE ioctl failed"
 #~ msgstr "%s：BLKSSZGET ioctl 失败"
 
 #, fuzzy
+#~| msgid " -a, --all           trim all mounted filesystems that are supported\n"
 #~ msgid " -a, --all           trim all supported mounted filesystems\n"
 #~ msgstr " -a, --all           修剪不支持的所有已挂载文件系统\n"
 
 #, fuzzy
+#~| msgid " -S, --setuid <uid>     set uid in entered namespace\n"
 #~ msgid " -S, --setuid <uid>\t    set uid in entered namespace\n"
 #~ msgstr " -S, --setuid <uid>     设置进入空间中的 uid\n"
 
 #, fuzzy
+#~| msgid " -G, --setgid <gid>     set gid in entered namespace\n"
 #~ msgid " -G, --setgid <gid>\t    set gid in entered namespace\n"
 #~ msgstr " -G, --setgid <gid>     设置进入名字空间中的 gid\n"
 
-#, fuzzy
 #~ msgid "options --map-root-user and --map-current-user are mutually exclusive"
-#~ msgstr "--setgroups=allow 和 --map-root-user 选项是互斥的"
+#~ msgstr "--map-root-user 选项和 --map-current-user 选项是互斥的"
 
 #, fuzzy
+#~| msgid "options --setgroups=allow and --map-root-user are mutually exclusive"
 #~ msgid "options --setgroups=allow and --map-current-user are mutually exclusive"
 #~ msgstr "--setgroups=allow 和 --map-root-user 选项是互斥的"
 
-#, c-format
+#~ msgid " -T, --log-timing <file> aliast to -t\n"
+#~ msgstr " -T, --log-timing <文件> 到 -t 的别名\n"
+
 #~ msgid "unknown option -%s"
 #~ msgstr "未知选项 -%s"
 
 #~ msgid "  Overflow\n"
 #~ msgstr "  上溢\n"
-
-#~ msgid "Rufus alignment"
-#~ msgstr "Rufus 对齐"
 
 #~ msgid "The old %s signature will be removed by a write command."
 #~ msgstr "写入命令将移除旧签名 %s。"
@@ -21202,6 +21098,9 @@ msgstr "输入行过长。"
 
 #~ msgid " old start: %ju, new start: %ju (move %ju sectors)\n"
 #~ msgstr " 原起点：%ju，新起点：%ju (移动 %ju 个扇区)\n"
+
+#~ msgid "Rufus alignment"
+#~ msgstr "Rufus 对齐"
 
 #~ msgid "user %s does not exist"
 #~ msgstr "用户 %s 不存在"
