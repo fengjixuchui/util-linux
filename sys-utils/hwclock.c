@@ -675,8 +675,12 @@ display_time(struct timeval hwctime)
  */
 #define __set_time(_tv)		settimeofday(_tv, NULL)
 
-#if !defined(SYS_settimeofday) && defined(__NR_settimeofday)
-# define SYS_settimeofday	__NR_settimeofday
+#ifndef SYS_settimeofday
+# ifdef __NR_settimeofday
+#  define SYS_settimeofday	__NR_settimeofday
+# else
+#  define SYS_settimeofday	__NR_settimeofday_time32
+# endif
 #endif
 
 static inline int __set_timezone(const struct timezone *tz)
@@ -1554,8 +1558,8 @@ hwclock_exit(const struct hwclock_control *ctl
  * Reading the /etc/adjtime file is the next biggest source of delay and
  * uncertainty.
  *
- * The user wants to know what time it was at the moment he invoked us, not
- * some arbitrary time later. And in setting the clock, he is giving us the
+ * The user wants to know what time it was at the moment they invoked us, not
+ * some arbitrary time later. And in setting the clock, they are giving us the
  * time at the moment we are invoked, so if we set the clock some time
  * later, we have to add some time to that.
  *
