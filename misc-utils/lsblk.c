@@ -50,6 +50,7 @@
 #include "closestream.h"
 #include "optutils.h"
 #include "fileutils.h"
+#include "loopdev.h"
 
 #include "lsblk.h"
 
@@ -906,8 +907,6 @@ static char *device_get_data(
 			ul_path_read_string(dev->sysfs, &str, "device/vendor");
 		break;
 	case COL_SIZE:
-		if (!dev->size)
-			break;
 		if (lsblk->bytes)
 			xasprintf(&str, "%ju", dev->size);
 		else
@@ -1151,6 +1150,15 @@ static void devtree_to_scols(struct lsblk_devtree *tr, struct libscols_table *ta
 		device_to_scols(dev, NULL, tab, NULL);
 }
 
+static int ignore_empty(struct lsblk_device *dev)
+{
+	if (dev->size != 0)
+		return 0;
+	if (dev->maj == LOOPDEV_MAJOR && loopdev_has_backing_file(dev->filename))
+		return 0;
+	return 1;
+}
+
 /*
  * Reads very basic information about the device from sysfs into the device struct
  */
@@ -1202,7 +1210,7 @@ static int initialize_device(struct lsblk_device *dev,
 		dev->size <<= 9;					/* in bytes */
 
 	/* Ignore devices of zero size */
-	if (!lsblk->all_devices && dev->size == 0) {
+	if (!lsblk->all_devices && ignore_empty(dev)) {
 		DBG(DEV, ul_debugobj(dev, "zero size device -- ignore"));
 		return -1;
 	}
@@ -1888,7 +1896,7 @@ int main(int argc, char *argv[])
 	lsblk_init_debug();
 
 	while((c = getopt_long(argc, argv,
-			       "abdDzE:e:fhJlnMmo:OpPiI:rstVST:x:", longopts, NULL)) != -1) {
+			       "abdDzE:e:fhJlnMmo:OpPiI:rstVST::x:", longopts, NULL)) != -1) {
 
 		err_exclusive_options(c, longopts, excl, excl_st);
 
@@ -1999,8 +2007,11 @@ int main(int argc, char *argv[])
 			break;
 		case 'T':
 			force_tree = 1;
-			if (optarg)
+			if (optarg) {
+				if (*optarg == '=')
+					optarg++;
 				lsblk->tree_id = column_name_to_id(optarg, strlen(optarg));
+			}
 			break;
 		case OPT_SYSROOT:
 			lsblk->sysroot = optarg;
