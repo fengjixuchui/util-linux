@@ -1,4 +1,9 @@
-
+/*
+ * No copyright is claimed.  This code is in the public domain; do with
+ * it what you wish.
+ *
+ * Written by Karel Zak <kzak@redhat.com>
+ */
 #include "buffer.h"
 
 void ul_buffer_reset_data(struct ul_buffer *buf)
@@ -34,7 +39,7 @@ void ul_buffer_refer_string(struct ul_buffer *buf, char *str)
 		ul_buffer_free_data(buf);
 	buf->begin = str;
 	buf->sz = str ? strlen(str) : 0;
-	buf->end = buf->begin + buf->sz;
+	buf->end = buf->begin ? buf->begin + buf->sz : buf->begin;
 }
 
 int ul_buffer_alloc_data(struct ul_buffer *buf, size_t sz)
@@ -81,6 +86,9 @@ int ul_buffer_append_data(struct ul_buffer *buf, const char *data, size_t sz)
 		if (rc)
 			return rc;
 	}
+	if (!buf->end)
+		return -EINVAL;	/* make static analyzers happy */
+
 	memcpy(buf->end, data, sz);
 	buf->end += sz;
 	*buf->end = '\0';	/* make sure it's terminated */

@@ -68,7 +68,6 @@
 #endif
 
 #include "c.h"
-#include "setproctitle.h"
 #include "pathnames.h"
 #include "strutils.h"
 #include "nls.h"
@@ -93,6 +92,13 @@
 #else
 # define TTY_MODE 0600
 #endif
+
+#ifndef SPT_BUFSIZE
+# define SPT_BUFSIZE     2048
+#endif
+
+static char **argv0;
+static size_t argv_lth;
 
 #define	TTYGRPNAME	"tty"	/* name of group to own ttys */
 #define VCS_PATH_MAX	64
@@ -166,7 +172,6 @@ static int is_consoletty(int fd)
 }
 #endif
 
-
 /*
  * Robert Ambrose writes:
  * A couple of my users have a problem with login processes hanging around
@@ -224,6 +229,61 @@ static void __attribute__ ((__noreturn__)) sleepexit(int eval)
 {
 	sleep((unsigned int)getlogindefs_num("FAIL_DELAY", LOGIN_EXIT_TIMEOUT));
 	exit(eval);
+}
+
+static void process_title_init (int argc, char **argv)
+{
+	int i;
+	char **envp = environ;
+
+	/*
+	 * Move the environment so we can reuse the memory.
+	 * (Code borrowed from sendmail.)
+	 * WARNING: ugly assumptions on memory layout here;
+	 *          if this ever causes problems, #undef DO_PS_FIDDLING
+	 */
+	for (i = 0; envp[i] != NULL; i++)
+		continue;
+
+	environ = malloc(sizeof(char *) * (i + 1));
+	if (environ == NULL)
+		return;
+
+	for (i = 0; envp[i] != NULL; i++)
+		if ((environ[i] = strdup(envp[i])) == NULL)
+			return;
+	environ[i] = NULL;
+
+	if (i > 0)
+		argv_lth = envp[i-1] + strlen(envp[i-1]) - argv[0];
+	else
+		argv_lth = argv[argc-1] + strlen(argv[argc-1]) - argv[0];
+	if (argv_lth > 1)
+		argv0 = argv;
+}
+
+static void process_title_update (const char *prog, const char *txt)
+{
+        size_t i;
+        char buf[SPT_BUFSIZE];
+
+        if (!argv0)
+                return;
+
+	if (strlen(prog) + strlen(txt) + 5 > SPT_BUFSIZE)
+		return;
+
+	sprintf(buf, "%s -- %s", prog, txt);
+
+        i = strlen(buf);
+        if (i > argv_lth - 2) {
+                i = argv_lth - 2;
+                buf[i] = '\0';
+        }
+	memset(argv0[0], '\0', argv_lth);       /* clear the memory area */
+        strcpy(argv0[0], buf);
+
+        argv0[1] = NULL;
 }
 
 static const char *get_thishost(struct login_context *cxt, const char **domain)
@@ -597,17 +657,20 @@ static void log_lastlog(struct login_context *cxt)
 		if ((pread(fd, (void *)&ll, sizeof(ll), offset) == sizeof(ll)) &&
 		    ll.ll_time != 0) {
 			char time_string[CTIME_BUFSIZ];
+			char buf[sizeof(ll.ll_host) + 1];
 
 			time_t ll_time = (time_t) ll.ll_time;
 
 			ctime_r(&ll_time, time_string);
 			printf(_("Last login: %.*s "), 24 - 5, time_string);
-			if (*ll.ll_host != '\0')
-				printf(_("from %.*s\n"),
-				       (int)sizeof(ll.ll_host), ll.ll_host);
-			else
-				printf(_("on %.*s\n"),
-				       (int)sizeof(ll.ll_line), ll.ll_line);
+
+			if (*ll.ll_host != '\0') {
+				mem2strcpy(buf, ll.ll_host, sizeof(ll.ll_host), sizeof(buf));
+				printf(_("from %s\n"), buf);
+			} else {
+				mem2strcpy(buf, ll.ll_line, sizeof(ll.ll_line), sizeof(buf));
+				printf(_("on %s\n"), buf);
+			}
 		}
 	}
 
@@ -1242,7 +1305,7 @@ int main(int argc, char **argv)
 	signal(SIGINT, SIG_IGN);
 
 	setpriority(PRIO_PROCESS, 0, 0);
-	initproctitle(argc, argv);
+	process_title_init(argc, argv);
 
 	while ((c = getopt_long(argc, argv, "fHh:pV", longopts, NULL)) != -1)
 		switch (c) {
@@ -1372,7 +1435,7 @@ int main(int argc, char **argv)
 
 	init_environ(&cxt);		/* init $HOME, $TERM ... */
 
-	setproctitle("login", cxt.username);
+	process_title_update("login", cxt.username);
 
 	log_syslog(&cxt);
 

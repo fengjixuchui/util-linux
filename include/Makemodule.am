@@ -3,6 +3,7 @@ dist_noinst_HEADERS += \
 	include/all-io.h \
 	include/bitops.h \
 	include/blkdev.h \
+	include/buffer.h \
 	include/canonicalize.h \
 	include/carefulputc.h \
 	include/cctype.h \
@@ -56,7 +57,6 @@ dist_noinst_HEADERS += \
 	include/rpmatch.h \
 	include/sha1.h \
 	include/signames.h \
-	include/setproctitle.h \
 	include/statfs_magic.h \
 	include/strutils.h \
 	include/strv.h \
