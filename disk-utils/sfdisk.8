@@ -36,6 +36,14 @@ never been important for Linux, and this addressing concept does not make any
 sense for new devices.
 .sp
 .B sfdisk
+protects the first disk sector when create a new disk label.
+The option \fB\-\-wipe always\fR disables this protection.  Note that
+.BR fdisk (8)
+and
+.BR cfdisk (8)
+completely erase this area by default.
+.sp
+.B sfdisk
 (since version 2.26)
 .B aligns the start and end of partitions
 to block-device I/O limits when relative sizes are specified, when the default
@@ -137,13 +145,36 @@ List the free unpartitioned areas on all or the specified devices.
 .TP
 .BR "\-\-part\-attrs \fIdevice partition-number " [ \fIattributes ]
 Change the GPT partition attribute bits.  If \fIattributes\fR is not specified,
-then print the current partition settings.
+then print the current partition settings.  The \fIattributes\fR argument is a
+comma- or space-delimited list of bits numbers or bit names.  For example, the
+string "RequiredPartition,50,51" sets three bits.  The currently supported
+attribute bits are:
+.RS
+.TP
+.BR "Bit 0 (RequiredPartition)"
+If this bit is set, the partition is required for the platform to function. The
+creator of the partition indicates that deletion or modification of the contents
+can result in loss of platform features or failure for the platform to boot or
+operate. The system cannot function normally if this partition is removed, and it
+should be considered part of the hardware of the system.
+.TP
+.BR "Bit 1 (NoBlockIOProtocol)"
+EFI firmware should ignore the content of the partition and not try to read from it.
+.TP
+.BR "Bit 2 (LegacyBIOSBootable)"
+The partition may be bootable by legacy BIOS firmware.
+.TP
+.BR "Bits 3-47"
+Undefined and must be zero. Reserved for expansion by future versions of the
+UEFI specification.
+.TP
+.BR "Bits 48-63"
+Reserved for GUID specific use. The use of these bits will vary depending on
+the partition type.  For example Microsoft uses bit 60 to indicate read-only,
+61 for shadow copy of another partition, 62 for hidden partitions and 63 to
+disable automount.
+.RE
 .sp
-The \fIattributes\fR argument is a
-comma- or space-delimited list of bits.  The currently supported attribute
-bits are: RequiredPartition, NoBlockIOProtocol, LegacyBIOSBootable
-and GUID-specific bits in the range from 48 to 63.  For example, the string
-"RequiredPartition,50,51" sets three bits.
 .TP
 .BR "\-\-part\-label \fIdevice partition-number " [ \fIlabel ]
 Change the GPT partition name (label).  If \fIlabel\fR is not specified,
@@ -206,7 +237,7 @@ the partition table.
 .TP
 .BR \-b , " \-\-backup"
 Back up the current partition table sectors before starting the partitioning.
-The default backup file name is ~/sfdisk-<device>-<offset>.bak; to use another
+The default backup file name is \(ti/sfdisk-<device>-<offset>.bak; to use another
 name see option \fB\-O\fR, \fB\-\-backup\-file\fR.
 .TP
 .BR \-\-color [ =\fIwhen ]
@@ -253,7 +284,7 @@ option \fB\-N\fR in order to be processed on one specific partition only.
 
 The optional \fIpath\fR specifies log file name. The log file contains information
 about all read/write operations on the partition data. The word "@default" as
-a \fIpath\fR forces sfdisk to use ~/sfdisk-<devname>.move for the log.  The log is
+a \fIpath\fR forces sfdisk to use \(ti/sfdisk-<devname>.move for the log.  The log is
 optional since v2.35.
 
 Note that this operation is risky and not atomic. \fBDon't forget to backup your data!\fR
@@ -315,8 +346,10 @@ to avoid possible collisions.  The argument \fIwhen\fR can be \fBauto\fR,
 \fBnever\fR or \fBalways\fR.  When this option is not given, the default is
 \fBauto\fR, in which case signatures are wiped only when in interactive mode;
 except the old partition-table signatures which are always wiped before create
-a new partition-table if the argument \fIwhen\fR is not \fBnever\fR. In all
-cases detected signatures are reported by warning messages before a new
+a new partition-table if the argument \fIwhen\fR is not \fBnever\fR.
+The \fBauto\fR mode also does not wipe the first sector (boot sector), it is
+necessary to use the \fBalways\fR mode to wipe this area.
+In all cases detected signatures are reported by warning messages before a new
 partition table is created.  See also the
 .BR wipefs (8)
 command.
@@ -554,7 +587,7 @@ This can later be restored by:
 If you want to do a full (binary) backup of all sectors where the
 partition table is stored,
 then use the \fB\-\-backup\fR option.  It writes the sectors to
-~/sfdisk-<device>-<offset>.bak files.  The default name of the backup file can
+\(ti/sfdisk-<device>-<offset>.bak files.  The default name of the backup file can
 be changed with the \fB\-\-backup\-file\fR option.  The backup files
 contain only raw data from the \fIdevice\fR.
 Note that the same concept of backup files is used by
@@ -569,7 +602,7 @@ The GPT header can later be restored by:
 .RS
 .sp
 .nf
-.B "dd  if=~/sfdisk-sda-0x00000200.bak  of=/dev/sda  \e"
+.B "dd  if=\(ti/sfdisk-sda-0x00000200.bak  of=/dev/sda  \e"
 .B "  seek=$((0x00000200))  bs=1  conv=notrunc"
 .fi
 .sp

@@ -1267,6 +1267,26 @@ static struct lsblk_device *devtree_get_device_or_new(struct lsblk_devtree *tr,
 	return dev;
 }
 
+static struct lsblk_device *devtree_pktcdvd_get_dep(
+			struct lsblk_devtree *tr,
+			struct lsblk_device *dev,
+			int want_slave)
+{
+	char buf[PATH_MAX], *name;
+	dev_t devno;
+
+	devno = lsblk_devtree_pktcdvd_get_mate(tr,
+			makedev(dev->maj, dev->min), !want_slave);
+	if (!devno)
+		return NULL;
+
+	name = sysfs_devno_to_devname(devno, buf, sizeof(buf));
+	if (!name)
+		return NULL;
+
+	return devtree_get_device_or_new(tr, NULL, name);
+}
+
 static int process_dependencies(
 			struct lsblk_devtree *tr,
 			struct lsblk_device *dev,
@@ -1357,6 +1377,7 @@ static int process_dependencies(
 	DIR *dir;
 	struct dirent *d;
 	const char *depname;
+	struct lsblk_device *dep = NULL;
 
 	assert(dev);
 
@@ -1371,21 +1392,20 @@ static int process_dependencies(
 
 	if (!(lsblk->inverse ? dev->nslaves : dev->nholders)) {
 		DBG(DEV, ul_debugobj(dev, " ignore (no slaves/holders)"));
-		return 0;
+		goto done;
 	}
 
 	depname = lsblk->inverse ? "slaves" : "holders";
 	dir = ul_path_opendir(dev->sysfs, depname);
 	if (!dir) {
 		DBG(DEV, ul_debugobj(dev, " ignore (no slaves/holders directory)"));
-		return 0;
+		goto done;
 	}
 	ul_path_close_dirfd(dev->sysfs);
 
 	DBG(DEV, ul_debugobj(dev, " %s: checking for '%s' dependence", dev->name, depname));
 
 	while ((d = xreaddir(dir))) {
-		struct lsblk_device *dep = NULL;
 		struct lsblk_device *disk = NULL;
 
 		/* Is the dependency a partition? */
@@ -1436,8 +1456,14 @@ next:
 			ul_path_close_dirfd(disk->sysfs);
 	}
 	closedir(dir);
+done:
+	dep = devtree_pktcdvd_get_dep(tr, dev, lsblk->inverse);
 
-	DBG(DEV, ul_debugobj(dev, "%s: checking for '%s' -- done", dev->name, depname));
+	if (dep && lsblk_device_new_dependence(dev, dep) == 0) {
+		lsblk_devtree_remove_root(tr, dep);
+		process_dependencies(tr, dep, lsblk->inverse ? 0 : 1);
+	}
+
 	return 0;
 }
 
@@ -1804,8 +1830,9 @@ static void __attribute__((__noreturn__)) usage(void)
 	fputs(_(" -r, --raw            use raw output format\n"), out);
 	fputs(_(" -s, --inverse        inverse dependencies\n"), out);
 	fputs(_(" -t, --topology       output info about topology\n"), out);
-	fputs(_(" -z, --zoned          print zone model\n"), out);
+	fputs(_(" -w, --width <num>    specifies output width as number of characters\n"), out);
 	fputs(_(" -x, --sort <column>  sort output by <column>\n"), out);
+	fputs(_(" -z, --zoned          print zone model\n"), out);
 	fputs(_("     --sysroot <dir>  use specified directory as system root\n"), out);
 	fputs(USAGE_SEPARATOR, out);
 	printf(USAGE_HELP_OPTIONS(22));
@@ -1813,7 +1840,7 @@ static void __attribute__((__noreturn__)) usage(void)
 	fprintf(out, USAGE_COLUMNS);
 
 	for (i = 0; i < ARRAY_SIZE(infos); i++)
-		fprintf(out, " %11s  %s\n", infos[i].name, _(infos[i].help));
+		fprintf(out, " %12s  %s\n", infos[i].name, _(infos[i].help));
 
 	printf(USAGE_MAN_TAIL("lsblk(8)"));
 
@@ -1839,6 +1866,7 @@ int main(int argc, char *argv[])
 	int c, status = EXIT_FAILURE;
 	char *outarg = NULL;
 	size_t i;
+	unsigned int width = 0;
 	int force_tree = 0, has_tree_col = 0;
 
 	enum {
@@ -1874,6 +1902,7 @@ int main(int argc, char *argv[])
 		{ "sysroot",    required_argument, NULL, OPT_SYSROOT },
 		{ "tree",       optional_argument, NULL, 'T' },
 		{ "version",    no_argument,       NULL, 'V' },
+		{ "width",	required_argument, NULL, 'w' },
 		{ NULL, 0, NULL, 0 },
 	};
 
@@ -1901,7 +1930,7 @@ int main(int argc, char *argv[])
 	lsblk_init_debug();
 
 	while((c = getopt_long(argc, argv,
-			       "abdDzE:e:fhJlnMmo:OpPiI:rstVST::x:", longopts, NULL)) != -1) {
+			       "abdDzE:e:fhJlnMmo:OpPiI:rstVST::w:x:", longopts, NULL)) != -1) {
 
 		err_exclusive_options(c, longopts, excl, excl_st);
 
@@ -2027,6 +2056,9 @@ int main(int argc, char *argv[])
 				break;
 			errtryhelp(EXIT_FAILURE);
 			break;
+		case 'w':
+			width = strtou32_or_err(optarg, _("invalid output width number argument"));
+			break;
 		case 'x':
 			lsblk->flags &= ~LSBLK_TREE; /* disable the default */
 			lsblk->sort_id = column_name_to_id(optarg, strlen(optarg));
@@ -2105,6 +2137,10 @@ int main(int argc, char *argv[])
 
 	if (lsblk->flags & LSBLK_JSON)
 		scols_table_set_name(lsblk->table, "blockdevices");
+	if (width) {
+		scols_table_set_termwidth(lsblk->table, width);
+		scols_table_set_termforce(lsblk->table, SCOLS_TERMFORCE_ALWAYS);
+	}
 
 	for (i = 0; i < ncolumns; i++) {
 		struct colinfo *ci = get_column_info(i);

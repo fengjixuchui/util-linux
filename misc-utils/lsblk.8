@@ -128,7 +128,9 @@ Output all available columns.
 .TP
 .BR \-P , " \-\-pairs"
 Produce output in the form of key="value" pairs.  The output lines are still ordered by
-dependencies.  All potentially unsafe characters are hex-escaped (\\x<code>).
+dependencies.  All potentially unsafe value characters are hex-escaped (\\x<code>).
+The key (variable name) will be modified to contain only characters allowed for a shell variable
+identifiers, for example, MIN_IO and FSUSE_PCT instead of MIN-IO and FSUSE%.
 .TP
 .BR \-p , " \-\-paths"
 Print full device paths.
@@ -156,6 +158,15 @@ This option is equivalent to
 .TP
 .BR \-V , " \-\-version"
 Display version information and exit.
+.TP
+.BR \-w , " \-\-width " \fInumber\fP
+Specifies output width as a number of characters.  The default is the number of
+the terminal columns, and if not executed on a terminal, then output width is not
+restricted at all by default.  This option also forces lsblk to assume that terminal
+control characters and unsafe characters are not allowed.  The expected use-case is
+for example when lsblk used by
+.BR watch (1)
+command.
 .TP
 .BR \-x , " \-\-sort " \fIcolumn\fP
 Sort output lines by \fIcolumn\fP. This option enables \fB\-\-list\fR output format by default.

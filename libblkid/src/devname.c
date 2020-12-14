@@ -92,7 +92,7 @@ blkid_dev blkid_get_dev(blkid_cache cache, const char *devname, int flags)
 		dev = blkid_new_dev();
 		if (!dev)
 			goto done;
-		dev->bid_time = INT_MIN;
+		dev->bid_time = (uintmax_t)1 << (sizeof(time_t) * 8 - 1);
 		if (cn) {
 			dev->bid_name = cn;
 			dev->bid_xname = strdup(devname);
@@ -480,11 +480,11 @@ sysfs_probe_all(blkid_cache cache, int only_if_new, int only_removable)
 		if (ul_path_read_u32(pc, &removable, "removable") != 0)
 			removable = 0;
 
-		/* ingnore empty devices */
+		/* ignore empty devices */
 		if (!size)
 			goto next;
 
-		/* accept removeable if only removable requested */
+		/* accept removable if only removable requested */
 		if (only_removable) {
 			if (!removable)
 				goto next;

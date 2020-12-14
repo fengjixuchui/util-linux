@@ -14,6 +14,12 @@ sockets, and Non-Uniform Memory Access (NUMA) nodes.  There is also information
 about the CPU caches and cache sharing, family, model, bogoMIPS, byte order,
 and stepping.
 .sp
+The default output formatting on terminal is subject to change and maybe
+optimized for better readability.  The output for non-terminals (e.g., pipes)
+is never affected by this optimization and it is always in "Field: data\\n"
+format.  Use for example \fBlscpu | less\fP to see the default output without
+optimizations.
+.sp
 In virtualized environments, the CPU architecture information displayed
 reflects the configuration of the guest operating system which is
 typically different from the physical (host) system.  On architectures that
@@ -30,14 +36,11 @@ column labels are not case sensitive.
 Not all columns are supported on all architectures.  If an unsupported column is
 specified, \fBlscpu\fP prints the column but does not provide any data for it.
 .sp
-The default output formatting on terminal maybe optimized for better
-readability.  The output for non-terminals (e.g., pipes) is never affected by
-this optimization and it is always in "Field: data\\n" format.
-.sp
 The cache sizes are reported as summary from all CPUs.  The versions before
 v2.34 reported per-core sizes, but this output was confusing due to complicated
 CPUs topology and the way how caches are shared between CPUs. For more details
-about caches see \fB\-\-cache\fP.
+about caches see \fB\-\-cache\fP.  Since version v2.37 \fBlscpu\fP follows
+cache IDs as provided by Linux kernel and it does not always start from zero.
 .SS COLUMNS
 Note that topology elements (core, socket, etc.) use a sequential unique ID
 starting from zero, but CPU logical numbers follow the kernel where there is
@@ -51,6 +54,9 @@ The logical core number.  A core can contain several CPUs.
 .TP
 .B SOCKET
 The logical socket number.  A socket can contain several cores.
+.TP
+.B CLUSTER
+The logical cluster number.  A cluster can contain several cores.
 .TP
 .B BOOK
 The logical book number.  A book can contain several sockets.

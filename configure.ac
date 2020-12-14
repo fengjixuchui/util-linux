@@ -319,6 +319,7 @@ AC_CHECK_HEADERS([ \
 	sys/socket.h \
 	sys/sockio.h \
 	sys/stat.h \
+	sys/sendfile.h \
 	sys/sysmacros.h \
 	sys/swap.h \
 	sys/syscall.h \
@@ -496,6 +497,7 @@ AC_CHECK_DECL([SO_PASSCRED],
 
 AC_CHECK_FUNCS([ \
 	clearenv \
+	close_range \
 	__fpurge \
 	fpurge \
 	__fpending \
@@ -530,6 +532,7 @@ AC_CHECK_FUNCS([ \
 	qsort_r \
 	rpmatch \
 	scandirat \
+	sendfile \
 	setprogname \
 	setresgid \
 	setresuid \
@@ -569,6 +572,7 @@ AS_IF([test "x$ul_cv_syscall_setns" = xno], [
 
 UL_CHECK_SYSCALL([pidfd_open])
 UL_CHECK_SYSCALL([pidfd_send_signal])
+UL_CHECK_SYSCALL([close_range])
 
 AC_CHECK_FUNCS([isnan], [],
 	[AC_CHECK_LIB([m], [isnan], [MATH_LIBS="-lm"])]
@@ -1502,8 +1506,8 @@ AM_CONDITIONAL([BUILD_MINIX], [test "x$build_minix" = xyes])
 
 
 AC_ARG_ENABLE([fdformat],
-  AS_HELP_STRING([--disable-fdformat], [do not build fdformat]),
-  [], [UL_DEFAULT_ENABLE([fdformat], [check])]
+  AS_HELP_STRING([--enable-fdformat], [build fdformat]),
+  [], [UL_DEFAULT_ENABLE([fdformat], [no])]
 )
 UL_BUILD_INIT([fdformat])
 UL_REQUIRES_LINUX([fdformat])
@@ -1651,7 +1655,11 @@ if test "x$matriplet" != "x"; then
   AC_DEFINE_UNQUOTED([MULTIARCHTRIPLET], ["$matriplet"],
   ["Multi-arch triplet for whereis library search path"])
 fi
-UL_BUILD_INIT([whereis], [yes])
+AC_ARG_ENABLE([whereis],
+  AS_HELP_STRING([--disable-whereis], [do not build whereis]),
+  [], [UL_DEFAULT_ENABLE([whereis], [check])]
+)
+UL_BUILD_INIT([whereis])
 AM_CONDITIONAL([BUILD_WHEREIS], [test "x$build_whereis" = xyes])
 
 UL_BUILD_INIT([getopt], [yes])
@@ -2289,7 +2297,7 @@ AS_IF([test "x$with_econf" != xno], [
 AM_CONDITIONAL([HAVE_ECONF], [test "x$have_econf" = xyes])
 
 AC_ARG_WITH([vendordir],
-  AS_HELP_STRING([--with-vendordir=DIR], [Direcotry for distribution provided configuration files]),
+  AS_HELP_STRING([--with-vendordir=DIR], [Directory for distribution provided configuration files]),
   [], []
 )
 AC_SUBST([vendordir], [$with_vendordir])

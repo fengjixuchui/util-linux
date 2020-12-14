@@ -230,7 +230,9 @@ static void sfdisk_init(struct sfdisk *sf)
 	if (!sf->cxt)
 		err(EXIT_FAILURE, _("failed to allocate libfdisk context"));
 	fdisk_set_ask(sf->cxt, ask_callback, (void *) sf);
-	fdisk_enable_bootbits_protection(sf->cxt, 1);
+
+	if (sf->wipemode != WIPEMODE_ALWAYS)
+		fdisk_enable_bootbits_protection(sf->cxt, 1);
 
 	if (sf->label_nested) {
 		struct fdisk_context *x = fdisk_new_nested_context(sf->cxt,
@@ -527,17 +529,18 @@ static int move_partition_data(struct sfdisk *sf, size_t partno, struct fdisk_pa
 	prev = 0;
 
 	for (cc = 1, i = 0; i < nsectors && nbytes > 0; i += step, cc++) {
+
+		if (nbytes < step_bytes) {
+			DBG(MISC, ul_debug("aligning step #%05zu from %ju to %ju",
+						cc, step_bytes, nbytes));
+			step_bytes = nbytes;
+		}
+		nbytes -= step_bytes;
+
 		if (backward)
 			src -= step_bytes, dst -= step_bytes;
 
 		DBG(MISC, ul_debug("#%05zu: src=%ju dst=%ju", cc, src, dst));
-
-		if (nbytes < step_bytes) {
-			DBG(MISC, ul_debug(" aligning step from %ju to %ju",
-						step_bytes, nbytes));
-			step_bytes = nbytes;
-		}
-		nbytes -= step_bytes;
 
 		if (!sf->noact) {
 			/* read source */
@@ -609,6 +612,12 @@ next:
 			fputc(' ', stdout);
 		fflush(stdout);
 		fputc('\r', stdout);
+
+		if (i > nsectors)
+			/* see for() above; @i has to be greater than @nsectors
+			 * on success due to i += step */
+			i = nsectors;
+
 		fprintf(stdout, _("Moved %ju from %ju sectors (%.0f%%)."),
 				i, nsectors,
 				100.0 / ((double) nsectors/(i+1)));
@@ -619,7 +628,6 @@ done:
 	if (f)
 		fclose(f);
 	free(buf);
-	free(devname);
 	free(typescript);
 
 	if (sf->noact)
@@ -629,6 +637,8 @@ done:
 		rc = -EIO;
 	} else if (rc)
 		warn(_("%s: failed to move data"), devname);
+
+	free(devname);
 
 	return rc;
 }
@@ -1627,7 +1637,7 @@ static void follow_wipe_mode(struct sfdisk *sf)
 	if (dowipe) {
 		if (!fdisk_is_ptcollision(sf->cxt)) {
 			fdisk_warnx(sf->cxt, _(
-				"The device contains '%s' signature and it will be removed by a write command. "
+				"The device contains '%s' signature and it may be removed by a write command. "
 				"See sfdisk(8) man page and --wipe option for more details."),
 				fdisk_get_collision(sf->cxt));
 			fputc('\n', stdout);
@@ -2162,7 +2172,8 @@ int main(int argc, char *argv[])
 		{ NULL, 0, NULL, 0 },
 	};
 	static const ul_excl_t excl[] = {	/* rows and cols in ASCII order */
-		{ 'F','J','d'},                 /* --list-free --json --dump */
+		{ 'F','d'},                     /* --list-free --dump */
+		{ 'F','J'},                     /* --list-free --json */
 		{ 's','u'},			/* --show-size --unit */
 		{ 0 }
 	};

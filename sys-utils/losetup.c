@@ -144,8 +144,8 @@ static int printf_loopdev(struct loopdev_cxt *lc)
 		goto done;
 	}
 
-	printf("%s: [%04d]:%" PRIu64 " (%s)",
-		loopcxt_get_device(lc), (int) dev, ino, fname);
+	printf("%s: [%04jd]:%ju (%s)",
+		loopcxt_get_device(lc), (intmax_t) dev, (uintmax_t) ino, fname);
 
 	if (loopcxt_get_offset(lc, &x) == 0 && x)
 			printf(_(", offset %ju"), x);
@@ -476,7 +476,7 @@ static int create_loop(struct loopdev_cxt *lc,
 		       uint64_t blocksize)
 {
 	int hasdev = loopcxt_has_device(lc);
-	int rc = 0;
+	int rc = 0, ntries = 0;
 
 	/* losetup --find --noverlap file.img */
 	if (!hasdev && nooverlap) {
@@ -572,8 +572,12 @@ static int create_loop(struct loopdev_cxt *lc,
 		rc = loopcxt_setup_device(lc);
 		if (rc == 0)
 			break;			/* success */
-		if (errno == EBUSY && !hasdev)
+
+		if (errno == EBUSY && !hasdev && ntries < 64) {
+			xusleep(200000);
+			ntries++;
 			continue;
+		}
 
 		/* errors */
 		errpre = hasdev && loopcxt_get_fd(lc) < 0 ?
