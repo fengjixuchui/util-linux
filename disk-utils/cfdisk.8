@@ -31,6 +31,10 @@ If you need advanced features, use
 .BR fdisk (8)
 instead.
 
+All disk label changes will remain in memory only, and the disk will be
+unmodified until you decide to write your changes.  Be careful before using the
+write command.
+
 Since version 2.25
 .B cfdisk
 supports MBR (DOS), GPT, SUN and SGI disk labels, but no longer provides any
@@ -68,6 +72,9 @@ argument is omitted, it defaults to \fB"yes"\fR.  This option overwrites
 environment variable \fB$LOCK_BLOCK_DEVICE\fR.  The default is not to use any
 lock at all, but it's recommended to avoid collisions with udevd or other
 tools.
+.TP
+.BR \-r , " \-\-read-only"
+Forced open in read-only mode.
 .TP
 .BR \-V , " \-\-version"
 Display version information and exit.
@@ -114,6 +121,15 @@ MiB (=1024*1024), and so on for GiB, TiB, PiB, EiB, ZiB and YiB
 .B q
 Quit the program.  This will exit the program without writing any data to
 the disk.
+.TP
+.B r
+Reduce or enlarge the current partition.
+.B cfdisk
+then prompts you for the new size of the partition.
+The default size is the current size.
+A partition marked as free space or marked as unusable cannot be resized.
+
+.B Note that reducing the size of a partition might destroy data on that partition.
 .TP
 .B s
 Sort the partitions in ascending start-sector order.  When deleting and
