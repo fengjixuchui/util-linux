@@ -1,17 +1,17 @@
 AC_INIT([util-linux],
 	m4_esyscmd([tools/git-version-gen .tarball-version]),
-	[kzak@redhat.com],,
+	[kzak@redhat.com], [],
 	[http://www.kernel.org/pub/linux/utils/util-linux/])
 
 
-AC_PREREQ([2.60])
+AC_PREREQ([2.64])
 
 AC_CONFIG_AUX_DIR([config])
 AC_CONFIG_MACRO_DIR([m4])
 dnl AC_USE_SYSTEM_EXTENSIONS must be called before any macros that run
-dnl the compiler (like AC_PROG_LIBTOOL) to avoid autoconf errors.
+dnl the compiler (like LT_INIT) to avoid autoconf errors.
 AC_USE_SYSTEM_EXTENSIONS
-AM_INIT_AUTOMAKE([-Wall foreign 1.10 tar-pax no-dist-gzip dist-xz subdir-objects])
+AM_INIT_AUTOMAKE([-Wall -Wno-portability foreign 1.10 tar-pax no-dist-gzip dist-xz subdir-objects])
 
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])],
 			    [AC_SUBST([AM_DEFAULT_VERBOSITY], [1])])
@@ -109,10 +109,9 @@ AS_IF([test "x$SYSCONFSTATICDIR" = x],
       [sysconfstaticdir=$SYSCONFSTATICDIR])
 AC_SUBST([sysconfstaticdir])
 
-
+AC_PROG_CC
 AM_PROG_CC_C_O
 AC_PROG_MKDIR_P
-AC_PROG_CC_STDC
 AC_PROG_YACC
 AC_CANONICAL_HOST
 AC_C_CONST
@@ -834,15 +833,7 @@ AC_ARG_WITH([selinux],
 AS_IF([test "x$with_selinux" = xno], [
   AM_CONDITIONAL([HAVE_SELINUX], [false])
 ], [
-  PKG_CHECK_MODULES([SELINUX], [libselinux >= 3.1], [have_selinux=yes], [have_selinux=no])
-  AS_IF([test "x$have_selinux" = xno], [
-	PKG_CHECK_MODULES([SELINUX], [libselinux >= 2.0],
-		[have_selinux=yes
-		 AC_DEFINE([HAVE_SELINUX_CONTEXT_T], [1], [Do we need deprecated selinux_context_t?])
-		],
-		[have_selinux=no])
-  ])
-
+  PKG_CHECK_MODULES([SELINUX], [libselinux >= 2.5], [have_selinux=yes], [have_selinux=no])
   AS_CASE([$with_selinux:$have_selinux],
     [yes:no], [AC_MSG_ERROR([SELinux selected but libselinux not found or too old])]
   )
